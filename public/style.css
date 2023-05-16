@@ -20,6 +20,10 @@ a {
     color: inherit;
 }
 
+.user-card {
+    margin-top: 450px;
+}
+
 .selected-article {
     margin: 0 auto;
 }
@@ -28,14 +32,21 @@ a {
     width: 600px;
     text-align: left;
     margin: 0 auto;
-    padding: 10px;
     font-size: xx-large;
 }
 
-.article-text {
+.article-text, .article-content {
     margin: 0 auto;
     text-align: left;
     width: 600px;
+}
+
+.author {
+    text-align: right;
+}
+
+.author a:hover {
+    color: red;
 }
 
 .wrapper {

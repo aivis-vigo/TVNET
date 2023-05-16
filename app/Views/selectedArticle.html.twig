@@ -41,6 +41,11 @@
                 <div class="selected-article">
                     <div class="article-content">
                         <h2>{{ article.title }}</h2>
+                        <div class="author">
+                            <a href="/users/{{ article.userId }}">
+                                Author ID: {{ article.userId }}
+                            </a>
+                        </div>
                         <img src="https://placehold.co/600x400/png">
                         <div class="article-text">
                             <p>{{ article.body }}</p>

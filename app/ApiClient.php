@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\User;
 use GuzzleHttp\Client;
 
 class ApiClient
@@ -26,6 +27,7 @@ class ApiClient
         foreach ($response as $article) {
             $collected[] = new Article(
                 $article->id,
+                $article->userId,
                 $article->title,
                 $article->body
             );
@@ -41,6 +43,7 @@ class ApiClient
 
         $collected[] = new Article(
             $response->id,
+            $response->userId,
             $response->title,
             $response->body
         );
@@ -62,6 +65,24 @@ class ApiClient
                 $comment->body
             );
         }
+        return $collected;
+    }
+
+    public function fetchUser(string $id): array
+    {
+        $collected = [];
+        $client = $this->client->get($this->url . "/users/$id");
+        $responseJson = $client->getBody()->getContents();
+        $user = json_decode($responseJson);
+
+        $collected[] = new User(
+            $user->id,
+            $user->name,
+            $user->username,
+            $user->email,
+            $user->address->city,
+            $user->company->name
+        );
         return $collected;
     }
 }

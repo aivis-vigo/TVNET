@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\ApiClient;
 use App\Core\TwigView;
 
-class CommentController
+class UserController
 {
     private ApiClient $client;
 
@@ -14,10 +14,10 @@ class CommentController
         $this->client = new ApiClient();
     }
 
-    public function allComments(string $id): TwigView
+    public function selectUser(string $id): TwigView
     {
-        return new TwigView('selectedArticle', [
-            'comments' => $this->client->fetchComments($id)
+        return new TwigView('user', [
+            'users' => $this->client->fetchUser($id)
         ]);
     }
 }
