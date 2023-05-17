@@ -24,7 +24,8 @@ class UsersController
     public function selectUser(string $id): TwigView
     {
         return new TwigView('user', [
-            'users' => $this->client->fetchUser($id)
+            'users' => $this->client->fetchUser($id),
+            'posts' => $this->client->fetchUserPosts($id)
         ]);
     }
 }

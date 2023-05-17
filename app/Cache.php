@@ -11,7 +11,7 @@ class Cache
         $cacheFile = '../cache/' . $key;
 
         file_put_contents($cacheFile, json_encode([
-            'epires_at' => Carbon::now()->addSeconds($ttl)->toTimeString(),
+            'expires_at' => Carbon::now()->addSeconds($ttl)->toTimeString(),
             'content' => $data
         ]));
     }

@@ -62,10 +62,9 @@
         {% if comments is defined %}
             {% for comment in comments %}
                 <div class="bg-white p-4 rounded-lg shadow-md">
-                    <h3 class="text-lg font-bold">{{ comment.email }}</h3>
-                    <p class="text-gray-700">
-                        {{ comment.body }}
-                    </p>
+                    <h3 class="text-gray-700 text-sm mb-2">{{ comment.email }}</h3>
+                    <p class="text-gray-700 text-lg font-bold">{{ comment.name }}</p>
+                    <p class="text-gray-700">{{ comment.body }}</p>
                 </div>
             {% endfor %}
         {% endif %}

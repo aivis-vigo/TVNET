@@ -163,4 +163,33 @@ class ApiClient
             return [];
         }
     }
+
+    public function fetchUserPosts(string $id): array
+    {
+        try {
+            $collected = [];
+
+            if (!Cache::has("user_posts_$id")) {
+                $client = $this->client->get($this->url . "/posts/?userId=$id");
+                $responseJson = $client->getBody()->getContents();
+                Cache::save("user_posts_$id", $responseJson);
+            } else {
+                $responseJson = Cache::get("user_posts_$id");
+            }
+
+            $posts = json_decode($responseJson);
+
+            foreach ($posts as $post) {
+                $collected[] = new Article(
+                    $post->id,
+                    $post->userId,
+                    $post->title,
+                    $post->body
+                );
+            }
+            return $collected;
+        } catch (GuzzleException $exception) {
+            return [];
+        }
+    }
 }
