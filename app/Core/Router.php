@@ -3,7 +3,7 @@
 namespace App\Core;
 
 use App\Controllers\ArticleController;
-use App\Controllers\UserController;
+use App\Controllers\UsersController;
 use FastRoute;
 
 class Router
@@ -12,8 +12,10 @@ class Router
     {
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $router) {
             $router->addRoute('GET', '/', [ArticleController::class, 'allArticles']);
+            $router->addRoute('GET', '/articles', [ArticleController::class, 'allArticles']);
             $router->addRoute('GET', '/article/{id:\d+}', [ArticleController::class, 'selectedArticle']);
-            $router->addRoute('GET', '/users/{id:\d+}', [UserController::class, 'selectUser']);
+            $router->addRoute('GET', '/users', [UsersController::class, 'fetchAllUsers']);
+            $router->addRoute('GET', '/users/{id:\d+}', [UsersController::class, 'selectUser']);
         });
 
         // Fetch method and URI from somewhere

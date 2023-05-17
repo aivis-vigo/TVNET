@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\Comment;
 use App\Models\User;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class ApiClient
 {
@@ -19,70 +20,121 @@ class ApiClient
 
     public function fetchArticles(): array
     {
-        $collected = [];
+        try {
+            $collected = [];
 
-        $client = $this->client->get($this->url . "/posts");
-        $response = json_decode($client->getBody()->getContents());
+            if (!Cache::has('allArticles')) {
+                $client = $this->client->get($this->url . "/posts");
+                $responseJson = $client->getBody()->getContents();
+                Cache::save('allArticles', $responseJson);
+            } else {
+                Cache::get('allArticles');
+            }
 
-        foreach ($response as $article) {
-            $collected[] = new Article(
-                $article->id,
-                $article->userId,
-                $article->title,
-                $article->body
-            );
+            $response = json_decode($responseJson);
+
+            foreach ($response as $article) {
+                $collected[] = new Article(
+                    $article->id,
+                    $article->userId,
+                    $article->title,
+                    $article->body
+                );
+            }
+            return $collected;
+        } catch (GuzzleException $exception) {
+            return [];
         }
-        return $collected;
     }
 
     public function fetchSelected(string $id): array
     {
-        $collected = [];
-        $client = $this->client->get($this->url . "/posts/$id");
-        $response = json_decode($client->getBody()->getContents());
+        try {
+            $collected = [];
 
-        $collected[] = new Article(
-            $response->id,
-            $response->userId,
-            $response->title,
-            $response->body
-        );
-        return $collected;
+            $client = $this->client->get($this->url . "/posts/$id");
+            $response = json_decode($client->getBody()->getContents());
+
+            $collected[] = new Article(
+                $response->id,
+                $response->userId,
+                $response->title,
+                $response->body
+            );
+            return $collected;
+        } catch (GuzzleException $exception) {
+            return [];
+        }
     }
 
     public function fetchComments(string $id): array
     {
-        $collected = [];
-        $client = $this->client->get($this->url . "/comments?postId=$id");
-        $responseJson = $client->getBody()->getContents();
-        $comments = json_decode($responseJson);
+        try {
+            $collected = [];
+            $client = $this->client->get($this->url . "/comments?postId=$id");
+            $responseJson = $client->getBody()->getContents();
+            $comments = json_decode($responseJson);
 
-        foreach ($comments as $comment) {
-            $collected[] = new Comment(
-                $comment->postId,
-                $comment->name,
-                $comment->email,
-                $comment->body
-            );
+            foreach ($comments as $comment) {
+                $collected[] = new Comment(
+                    $comment->postId,
+                    $comment->name,
+                    $comment->email,
+                    $comment->body
+                );
+            }
+            return $collected;
+        } catch (GuzzleException $exception) {
+            return [];
         }
-        return $collected;
+    }
+
+    public function fetchAllUsers(): array
+    {
+
+        try {
+            $collected = [];
+
+            $client = $this->client->get($this->url . "/users");
+
+            $responseJson = $client->getBody()->getContents();
+            $users = json_decode($responseJson);
+
+            foreach ($users as $user) {
+                $collected[] = new User(
+                    $user->id,
+                    $user->name,
+                    $user->username,
+                    $user->email,
+                    $user->address->city,
+                    $user->company->name
+                );
+            }
+            return $collected;
+        } catch (GuzzleException $exception) {
+            return [];
+        }
     }
 
     public function fetchUser(string $id): array
     {
-        $collected = [];
-        $client = $this->client->get($this->url . "/users/$id");
-        $responseJson = $client->getBody()->getContents();
-        $user = json_decode($responseJson);
+        try {
+            $collected = [];
+            $client = $this->client->get($this->url . "/users/$id");
+            $responseJson = $client->getBody()->getContents();
+            $user = json_decode($responseJson);
 
-        $collected[] = new User(
-            $user->id,
-            $user->name,
-            $user->username,
-            $user->email,
-            $user->address->city,
-            $user->company->name
-        );
-        return $collected;
+            $collected[] = new User(
+                $user->id,
+                $user->name,
+                $user->username,
+                $user->email,
+                $user->address->city,
+                $user->company->name
+            );
+            return $collected;
+        } catch (GuzzleException $exception) {
+            return [];
+        }
     }
 }
