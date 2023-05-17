@@ -28,7 +28,7 @@ class ApiClient
                 $responseJson = $client->getBody()->getContents();
                 Cache::save('allArticles', $responseJson);
             } else {
-                Cache::get('allArticles');
+               $responseJson = Cache::get('allArticles');
             }
 
             $response = json_decode($responseJson);
@@ -52,8 +52,15 @@ class ApiClient
         try {
             $collected = [];
 
-            $client = $this->client->get($this->url . "/posts/$id");
-            $response = json_decode($client->getBody()->getContents());
+            if (!Cache::has("article_$id")) {
+                $client = $this->client->get($this->url . "/posts/$id");
+                $responseJson = $client->getBody()->getContents();
+                Cache::save("article_$id", $responseJson);
+            } else {
+                $responseJson = Cache::get("article_$id");
+            }
+
+            $response = json_decode($responseJson);
 
             $collected[] = new Article(
                 $response->id,
@@ -71,8 +78,15 @@ class ApiClient
     {
         try {
             $collected = [];
-            $client = $this->client->get($this->url . "/comments?postId=$id");
-            $responseJson = $client->getBody()->getContents();
+
+            if (!Cache::has("article_comments_$id")) {
+                $client = $this->client->get($this->url . "/comments?postId=$id");
+                $responseJson = $client->getBody()->getContents();
+                Cache::save("article_comments_$id", $responseJson);
+            } else {
+                $responseJson = Cache::get("article_comments_$id");
+            }
+
             $comments = json_decode($responseJson);
 
             foreach ($comments as $comment) {
@@ -95,9 +109,14 @@ class ApiClient
         try {
             $collected = [];
 
-            $client = $this->client->get($this->url . "/users");
+            if (!Cache::has("allUsers")) {
+                $client = $this->client->get($this->url . "/users");
+                $responseJson = $client->getBody()->getContents();
+                Cache::save("allUsers", $responseJson);
+            } else {
+                $responseJson = Cache::get("allUsers");
+            }
 
-            $responseJson = $client->getBody()->getContents();
             $users = json_decode($responseJson);
 
             foreach ($users as $user) {
@@ -120,8 +139,15 @@ class ApiClient
     {
         try {
             $collected = [];
-            $client = $this->client->get($this->url . "/users/$id");
-            $responseJson = $client->getBody()->getContents();
+
+            if (!Cache::has("user_$id")) {
+                $client = $this->client->get($this->url . "/users/$id");
+                $responseJson = $client->getBody()->getContents();
+                Cache::save("user_$id", $responseJson);
+            } else {
+                $responseJson = Cache::get("user_$id");
+            }
+
             $user = json_decode($responseJson);
 
             $collected[] = new User(
