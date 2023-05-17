@@ -14,15 +14,21 @@ class UsersController
         $this->client = new ApiClient();
     }
 
-    public function fetchAllUsers(): TwigView
+    public function index(): TwigView
     {
         return new TwigView('users', [
            'users'=> $this->client->fetchAllUsers()
         ]);
     }
 
-    public function selectUser(string $id): TwigView
+    public function show(string $id): TwigView
     {
+        $selectedUser = $this->client->fetchUser($id);
+
+        if (!$selectedUser) {
+            return new TwigView('notFound', []);
+        }
+
         return new TwigView('user', [
             'users' => $this->client->fetchUser($id),
             'posts' => $this->client->fetchUserPosts($id)

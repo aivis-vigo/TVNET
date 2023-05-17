@@ -11,11 +11,11 @@ class Router
     public static function response(): ?TwigView
     {
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $router) {
-            $router->addRoute('GET', '/', [ArticleController::class, 'allArticles']);
-            $router->addRoute('GET', '/articles', [ArticleController::class, 'allArticles']);
-            $router->addRoute('GET', '/article/{id:\d+}', [ArticleController::class, 'selectedArticle']);
-            $router->addRoute('GET', '/users', [UsersController::class, 'fetchAllUsers']);
-            $router->addRoute('GET', '/users/{id:\d+}', [UsersController::class, 'selectUser']);
+            $router->addRoute('GET', '/', [ArticleController::class, 'index']);
+            $router->addRoute('GET', '/articles', [ArticleController::class, 'index']);
+            $router->addRoute('GET', '/article/{id:\d+}', [ArticleController::class, 'show']);
+            $router->addRoute('GET', '/users', [UsersController::class, 'index']);
+            $router->addRoute('GET', '/users/{id:\d+}', [UsersController::class, 'show']);
         });
 
         // Fetch method and URI from somewhere

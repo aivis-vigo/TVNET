@@ -14,17 +14,23 @@ class ArticleController
         $this->client = new ApiClient();
     }
 
-    public function allArticles(): TwigView
+    public function index(): TwigView
     {
         return new TwigView('articles', [
             'articles' => $this->client->fetchArticles()
         ]);
     }
 
-    public function selectedArticle(string $id): TwigView
+    public function show(string $id): TwigView
     {
+        $selectedArticle = $this->client->fetchSelectedArticle($id);
+
+        if (!$selectedArticle) {
+            return new TwigView('notFound', []);
+        }
+
         return new TwigView('selectedArticle', [
-            'articles' => $this->client->fetchSelected($id),
+            'articles' => $this->client->fetchSelectedArticle($id),
             'comments' => $this->client->fetchComments($id)
         ]);
     }

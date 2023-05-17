@@ -47,7 +47,7 @@ class ApiClient
         }
     }
 
-    public function fetchSelected(string $id): array
+    public function fetchSelectedArticle(string $id): array
     {
         try {
             $collected = [];
