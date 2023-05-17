@@ -9,7 +9,8 @@ class App
 {
     public function run(): void
     {
-        $response = Router::response();
+        $routes = require_once '../routes.php';
+        $response = Router::response($routes);
         $renderer = new Renderer('../app/Views');
         echo $renderer->render($response);
     }

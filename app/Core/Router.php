@@ -2,20 +2,17 @@
 
 namespace App\Core;
 
-use App\Controllers\ArticleController;
-use App\Controllers\UsersController;
 use FastRoute;
 
 class Router
 {
-    public static function response(): ?TwigView
+    public static function response(array $routes)
     {
-        $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $router) {
-            $router->addRoute('GET', '/', [ArticleController::class, 'index']);
-            $router->addRoute('GET', '/articles', [ArticleController::class, 'index']);
-            $router->addRoute('GET', '/article/{id:\d+}', [ArticleController::class, 'show']);
-            $router->addRoute('GET', '/users', [UsersController::class, 'index']);
-            $router->addRoute('GET', '/users/{id:\d+}', [UsersController::class, 'show']);
+        $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $router) use ($routes) {
+            foreach ($routes as $route) {
+                [$method, $path, $handler] = $route;
+                $router->addRoute($method, $path, $handler);
+            }
         });
 
         // Fetch method and URI from somewhere
