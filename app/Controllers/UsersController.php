@@ -15,7 +15,7 @@ class UsersController
         $service = (new IndexUserServices());
         $users = $service->execute();
 
-        return new TwigView('users', [
+        return new TwigView('allUsers', [
            'users'=> $users
         ]);
     }
@@ -26,7 +26,7 @@ class UsersController
             $service = (new ShowUserService());
             $response = $service->execute(new ShowUserRequest($id));
 
-            return new TwigView('user', [
+            return new TwigView('singleUser', [
                 'users' => [$response->user()],
                 'posts' => $response->posts()
             ]);
