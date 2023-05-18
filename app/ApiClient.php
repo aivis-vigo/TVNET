@@ -132,11 +132,9 @@ class ApiClient
         }
     }
 
-    public function fetchUser(string $id): array
+    public function fetchUser(string $id): ?User
     {
         try {
-            $collected = [];
-
             if (!Cache::has("user_$id")) {
                 $client = $this->client->get($this->url . "/users/$id");
                 $responseJson = $client->getBody()->getContents();
@@ -147,7 +145,7 @@ class ApiClient
 
             $user = json_decode($responseJson);
 
-            $collected[] = new User(
+            return new User(
                 $user->id,
                 $user->name,
                 $user->username,
@@ -155,9 +153,8 @@ class ApiClient
                 $user->address->city,
                 $user->company->name
             );
-            return $collected;
         } catch (GuzzleException $exception) {
-            return [];
+            return null;
         }
     }
 

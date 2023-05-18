@@ -2,35 +2,36 @@
 
 namespace App\Controllers;
 
-use App\ApiClient;
 use App\Core\TwigView;
+use App\Exceptions\UserNotFoundException;
+use App\Services\User\IndexUserServices;
+use App\Services\User\Show\ShowUserRequest;
+use App\Services\User\Show\ShowUserService;
 
 class UsersController
 {
-    private ApiClient $client;
-
-    public function __construct()
-    {
-        $this->client = new ApiClient();
-    }
-
     public function index(): TwigView
     {
+        $service = (new IndexUserServices());
+        $users = $service->execute();
+
         return new TwigView('users', [
-           'users'=> $this->client->fetchAllUsers()
+           'users'=> $users
         ]);
     }
 
     public function show(string $id): TwigView
     {
-        $selectedUser = $this->client->fetchUser($id);
-        if (!$selectedUser) {
+        try {
+            $service = (new ShowUserService());
+            $response = $service->execute(new ShowUserRequest($id));
+
+            return new TwigView('user', [
+                'users' => [$response->user()],
+                'posts' => $response->posts()
+            ]);
+        } catch (UserNotFoundException $exception) {
             return new TwigView('notFound', []);
         }
-
-        return new TwigView('user', [
-            'users' => $this->client->fetchUser($id),
-            'posts' => $this->client->fetchUserPosts($id)
-        ]);
     }
 }
