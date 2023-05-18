@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Core\TwigView;
 use App\Exceptions\ResourceNotFoundException;
-use App\Services\User\IndexUserServices;
+use App\Services\User\Index\IndexUserServices;
 use App\Services\User\Show\ShowUserRequest;
 use App\Services\User\Show\ShowUserService;
 

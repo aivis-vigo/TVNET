@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Core\TwigView;
 use App\Exceptions\ResourceNotFoundException;
-use App\Services\Article\IndexArticleServices;
+use App\Services\Article\Index\IndexArticleServices;
 use App\Services\Article\Show\ShowArticleRequest;
 use App\Services\Article\Show\ShowArticleService;
 
