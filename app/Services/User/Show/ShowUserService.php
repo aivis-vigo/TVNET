@@ -3,7 +3,7 @@
 namespace App\Services\User\Show;
 
 use App\ApiClient;
-use App\Exceptions\UserNotFoundException;
+use App\Exceptions\ResourceNotFoundException;
 
 class ShowUserService
 {
@@ -19,7 +19,7 @@ class ShowUserService
         $user = $this->client->fetchUser($request->id());
 
         if ($user == null) {
-            throw new UserNotFoundException('User not found!');
+            throw new ResourceNotFoundException('User not found!');
         }
 
         $posts = $this->client->fetchUserPosts($request->id());

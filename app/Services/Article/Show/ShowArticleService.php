@@ -3,7 +3,7 @@
 namespace App\Services\Article\Show;
 
 use App\ApiClient;
-use App\Exceptions\ArticleNotFoundException;
+use App\Exceptions\ResourceNotFoundException;
 
 class ShowArticleService
 {
@@ -19,7 +19,7 @@ class ShowArticleService
         $article = $this->client->fetchSelectedArticle($request->id());
 
         if ($article == null) {
-            throw new ArticleNotFoundException('Article not found!');
+            throw new ResourceNotFoundException('Article not found!');
         }
 
         $comments = $this->client->fetchComments($request->id());
