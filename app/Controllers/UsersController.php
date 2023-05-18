@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\TwigView;
-use App\Exceptions\UserNotFoundException;
+use App\Exceptions\ResourceNotFoundException;
 use App\Services\User\IndexUserServices;
 use App\Services\User\Show\ShowUserRequest;
 use App\Services\User\Show\ShowUserService;
@@ -16,7 +16,7 @@ class UsersController
         $users = $service->execute();
 
         return new TwigView('allUsers', [
-           'users'=> $users
+            'users' => $users
         ]);
     }
 
@@ -30,7 +30,7 @@ class UsersController
                 'users' => [$response->user()],
                 'posts' => $response->posts()
             ]);
-        } catch (UserNotFoundException $exception) {
+        } catch (ResourceNotFoundException $exception) {
             return new TwigView('notFound', []);
         }
     }

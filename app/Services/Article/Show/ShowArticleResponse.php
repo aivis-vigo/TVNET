@@ -8,6 +8,7 @@ class ShowArticleResponse
 {
     private Article $article;
     private array $comments;
+
     public function __construct(Article $article, array $comments)
     {
         $this->article = $article;
