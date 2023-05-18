@@ -6,7 +6,7 @@ use App\Controllers\UsersController;
 return [
     ['GET', '/', [ArticleController::class, 'index']],
     ['GET', '/articles', [ArticleController::class, 'index']],
-    ['GET', '/article/{id:\d+}', [ArticleController::class, 'show']],
+    ['GET', '/articles/{id:\d+}', [ArticleController::class, 'show']],
     ['GET', '/users', [UsersController::class, 'index']],
     ['GET', '/users/{id:\d+}', [UsersController::class, 'show']]
 ];

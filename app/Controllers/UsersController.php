@@ -15,9 +15,7 @@ class UsersController
         $service = (new IndexUserServices());
         $users = $service->execute();
 
-        return new TwigView('allUsers', [
-            'users' => $users
-        ]);
+        return new TwigView('allUsers', ['users' => $users]);
     }
 
     public function show(string $id): TwigView
