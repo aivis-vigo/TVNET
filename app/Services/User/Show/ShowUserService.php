@@ -17,11 +17,12 @@ class ShowUserService
     public function execute(ShowUserRequest $request): ShowUserResponse
     {
         $user = $this->client->fetchUser($request->id());
-        $posts = $this->client->fetchUserPosts($request->id());
 
-        if ($posts == null) {
-            throw new UserNotFoundException('No posts to show!');
+        if ($user == null) {
+            throw new UserNotFoundException('User not found!');
         }
+
+        $posts = $this->client->fetchUserPosts($request->id());
 
         return new ShowUserResponse($user, $posts);
     }
