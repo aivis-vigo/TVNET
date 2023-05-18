@@ -24,7 +24,6 @@ class UsersController
     public function show(string $id): TwigView
     {
         $selectedUser = $this->client->fetchUser($id);
-
         if (!$selectedUser) {
             return new TwigView('notFound', []);
         }

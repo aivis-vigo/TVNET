@@ -47,11 +47,9 @@ class ApiClient
         }
     }
 
-    public function fetchSelectedArticle(string $id): array
+    public function fetchSelectedArticle(string $id): ?Article
     {
         try {
-            $collected = [];
-
             if (!Cache::has("article_$id")) {
                 $client = $this->client->get($this->url . "/posts/$id");
                 $responseJson = $client->getBody()->getContents();
@@ -62,15 +60,14 @@ class ApiClient
 
             $response = json_decode($responseJson);
 
-            $collected[] = new Article(
+            return new Article(
                 $response->id,
                 $response->userId,
                 $response->title,
                 $response->body
             );
-            return $collected;
         } catch (GuzzleException $exception) {
-            return [];
+            return null;
         }
     }
 

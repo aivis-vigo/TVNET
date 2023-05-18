@@ -2,36 +2,34 @@
 
 namespace App\Controllers;
 
-use App\ApiClient;
 use App\Core\TwigView;
+use App\Exceptions\ArticleNotFoundException;
+use App\Services\Article\IndexArticleServices;
+use App\Services\Article\Show\ShowArticleRequest;
+use App\Services\Article\Show\ShowArticleService;
 
 class ArticleController
 {
-    private ApiClient $client;
-
-    public function __construct()
-    {
-        $this->client = new ApiClient();
-    }
-
     public function index(): TwigView
     {
-        return new TwigView('articles', [
-            'articles' => $this->client->fetchArticles()
-        ]);
+        $service = (new IndexArticleServices());
+        $articles = $service->execute();
+
+        return new TwigView('articles', ['articles' => $articles]);
     }
 
     public function show(string $id): TwigView
     {
-        $selectedArticle = $this->client->fetchSelectedArticle($id);
+        try {
+            $service = (new ShowArticleService());
+            $response = $service->execute(new ShowArticleRequest($id));
 
-        if (!$selectedArticle) {
+            return new TwigView('selectedArticle', [
+                'articles' => [$response->article()],
+                'comments' => $response->comments()
+            ]);
+        } catch (ArticleNotFoundException $exception) {
             return new TwigView('notFound', []);
         }
-
-        return new TwigView('selectedArticle', [
-            'articles' => $this->client->fetchSelectedArticle($id),
-            'comments' => $this->client->fetchComments($id)
-        ]);
     }
 }
