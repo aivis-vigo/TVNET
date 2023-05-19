@@ -12,4 +12,4 @@
 
 # Enjoy
 
-<img src="https://github.com/aivis-vigo/TVNET/assets/120174645/de7e18d7-b839-4004-bf8a-db19482edf95" alt="home_page>
+<img src="https://github.com/aivis-vigo/TVNET/assets/120174645/de7e18d7-b839-4004-bf8a-db19482edf95" alt="home_page">
