@@ -5,5 +5,7 @@
 
 ---
 
-# Require
+# How to start
 
+<li>Composer install</li>
+<li>Run php -S localhost:8000 in public directory</li>
