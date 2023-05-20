@@ -13,6 +13,7 @@ class Renderer
     {
         $loader = new FilesystemLoader($basePath);
         $this->twig = new Environment($loader);
+
     }
 
     public function render(TwigView $view): string
