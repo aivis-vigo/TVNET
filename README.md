@@ -12,8 +12,9 @@
 
 # Enjoy
 
-1. Home  
-<img src="https://github.com/aivis-vigo/TVNET/assets/120174645/de7e18d7-b839-4004-bf8a-db19482edf95" alt="home_page"><br><br>  
+1. Home  ![Screenshot from 2023-05-20 15-08-21]()
+
+<img src="https://github.com/aivis-vigo/TVNET/assets/120174645/aa7afabe-2289-4b5d-9b56-4c6807bbf520" alt="home_page"><br><br>  
   
 2. Article  
 <img src="https://github.com/aivis-vigo/TVNET/assets/120174645/d096fcf7-65eb-41ec-a283-f76c7e73453f" alt="article_page"><br><br> 
