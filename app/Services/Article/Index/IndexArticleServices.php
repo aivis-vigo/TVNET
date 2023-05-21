@@ -4,6 +4,7 @@ namespace App\Services\Article\Index;
 
 use App\Repositories\Article\ArticleRepository;
 use App\Repositories\Article\JsonPlaceholderArticleRepository;
+use App\Repositories\Article\RandomArticleRepository;
 
 class IndexArticleServices
 {

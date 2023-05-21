@@ -15,6 +15,10 @@ class ArticleController
         $service = (new IndexArticleServices());
         $articles = $service->execute();
 
+        if (empty($articles)) {
+            return new TwigView('notFound', []);
+        }
+
         return new TwigView('articles', ['articles' => $articles]);
     }
 
