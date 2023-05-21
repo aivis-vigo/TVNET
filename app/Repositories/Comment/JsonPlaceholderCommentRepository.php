@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App\Repositories\Comment;
 
 use App\Cache;
 use App\Models\Comment;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
-class CommentRepository
+class JsonPlaceholderCommentRepository implements CommentRepository
 {
     private Client $client;
     private const API_URL = "https://jsonplaceholder.typicode.com";

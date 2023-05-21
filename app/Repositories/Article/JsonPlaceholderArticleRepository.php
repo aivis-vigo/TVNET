@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App\Repositories\Article;
 
 use App\Cache;
 use App\Models\Article;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
-class ArticleRepository
+class JsonPlaceholderArticleRepository implements ArticleRepository
 {
     private Client $client;
     private const API_URL = "https://jsonplaceholder.typicode.com";

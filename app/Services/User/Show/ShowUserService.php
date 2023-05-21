@@ -3,15 +3,16 @@
 namespace App\Services\User\Show;
 
 use App\Exceptions\ResourceNotFoundException;
-use App\Repositories\UsersRepository;
+use App\Repositories\User\JsonPlaceholderUsersRepository;
+use App\Repositories\User\UserRepository;
 
 class ShowUserService
 {
-    private UsersRepository $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct()
     {
-        $this->userRepository = new UsersRepository();
+        $this->userRepository = new JsonPlaceholderUsersRepository();
     }
 
     public function execute(ShowUserRequest $request): ShowUserResponse
