@@ -11,7 +11,7 @@ use GuzzleHttp\Exception\GuzzleException;
 class UsersRepository
 {
     private Client $client;
-    private const URL = "https://jsonplaceholder.typicode.com";
+    private const API_URL = "https://jsonplaceholder.typicode.com";
 
     public function __construct()
     {
@@ -25,7 +25,7 @@ class UsersRepository
             $collected = [];
 
             if (!Cache::has("allUsers")) {
-                $client = $this->client->get(self::URL . "/users");
+                $client = $this->client->get(self::API_URL . "/users");
                 $responseJson = $client->getBody()->getContents();
                 Cache::save("allUsers", $responseJson);
             } else {
@@ -47,7 +47,7 @@ class UsersRepository
     {
         try {
             if (!Cache::has("user_$id")) {
-                $client = $this->client->get(self::URL . "/users/$id");
+                $client = $this->client->get(self::API_URL . "/users/$id");
                 $responseJson = $client->getBody()->getContents();
                 Cache::save("user_$id", $responseJson);
             } else {
@@ -68,7 +68,7 @@ class UsersRepository
             $collected = [];
 
             if (!Cache::has("user_posts_$id")) {
-                $client = $this->client->get(self::URL . "/posts/?userId=$id");
+                $client = $this->client->get(self::API_URL . "/posts/?userId=$id");
                 $responseJson = $client->getBody()->getContents();
                 Cache::save("user_posts_$id", $responseJson);
             } else {
