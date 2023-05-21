@@ -3,20 +3,19 @@
 namespace App\Services\Article\Index;
 
 use App\Repositories\Article\ArticleRepository;
-use App\Repositories\Article\JsonPlaceholderArticleRepository;
-use App\Repositories\Article\RandomArticleRepository;
+use App\Repositories\Article\CombinedArticleRepository;
 
 class IndexArticleServices
 {
-    private ArticleRepository $articleRepository;
+    private ArticleRepository $combinedArticleRepository;
 
     public function __construct()
     {
-        $this->articleRepository = new JsonPlaceholderArticleRepository();
+        $this->combinedArticleRepository = new CombinedArticleRepository();
     }
 
     public function execute(): array
     {
-        return $this->articleRepository->all();
+        return $this->combinedArticleRepository->all();
     }
 }

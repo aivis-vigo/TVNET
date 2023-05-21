@@ -9,11 +9,10 @@ class RandomArticleRepository implements ArticleRepository
     public function all(): array
     {
         $articles = [];
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $articles[] = $this->randomArticle();
         }
         return $articles;
-        //return [];
     }
 
     public function selectById(string $id): ?Article
@@ -26,8 +25,8 @@ class RandomArticleRepository implements ArticleRepository
         return new Article(
             1,
             1,
-            'Random article ' . rand(1, 587),
-            '- TEXT HERE -'
+            'Random article - ' . rand(1, 587),
+            'Hello world'
         );
     }
 }
