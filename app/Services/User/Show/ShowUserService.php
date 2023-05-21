@@ -2,27 +2,27 @@
 
 namespace App\Services\User\Show;
 
-use App\ApiClient;
 use App\Exceptions\ResourceNotFoundException;
+use App\Repositories\UsersRepository;
 
 class ShowUserService
 {
-    private ApiClient $client;
+    private UsersRepository $userRepository;
 
     public function __construct()
     {
-        $this->client = new ApiClient();
+        $this->userRepository = new UsersRepository();
     }
 
     public function execute(ShowUserRequest $request): ShowUserResponse
     {
-        $user = $this->client->fetchUser($request->id());
+        $user = $this->userRepository->selectById($request->id());
 
         if ($user == null) {
             throw new ResourceNotFoundException('User not found!');
         }
 
-        $posts = $this->client->fetchUserPosts($request->id());
+        $posts = $this->userRepository->fetchUserPosts($request->id());
 
         return new ShowUserResponse($user, $posts);
     }

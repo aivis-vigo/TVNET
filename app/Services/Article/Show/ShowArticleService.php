@@ -2,27 +2,27 @@
 
 namespace App\Services\Article\Show;
 
-use App\ApiClient;
 use App\Exceptions\ResourceNotFoundException;
+use App\Repositories\ArticleRepository;
 
 class ShowArticleService
 {
-    private ApiClient $client;
+    private ArticleRepository $articleRepository;
 
     public function __construct()
     {
-        $this->client = new ApiClient();
+        $this->articleRepository = new ArticleRepository();
     }
 
     public function execute(ShowArticleRequest $request): ShowArticleResponse
     {
-        $article = $this->client->fetchSelectedArticle($request->id());
+        $article = $this->articleRepository->selectById($request->id());
 
         if ($article == null) {
             throw new ResourceNotFoundException('Article not found!');
         }
 
-        $comments = $this->client->fetchComments($request->id());
+        $comments = $this->articleRepository->fetchArticleComments($request->id());
 
         return new ShowArticleResponse($article, $comments);
     }

@@ -2,19 +2,19 @@
 
 namespace App\Services\User\Index;
 
-use App\ApiClient;
+use App\Repositories\UsersRepository;
 
 class IndexUserServices
 {
-    private ApiClient $client;
+    private UsersRepository $userRepository;
 
     public function __construct()
     {
-        $this->client = new ApiClient();
+        $this->userRepository = new UsersRepository();
     }
 
     public function execute(): array
     {
-        return $this->client->fetchAllUsers();
+        return $this->userRepository->all();
     }
 }

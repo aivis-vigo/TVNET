@@ -2,5 +2,10 @@
 
 require_once "../vendor/autoload.php";
 
-$client = new App\App();
-$client->run();
+use App\Core\Renderer;
+use App\Core\Router;
+
+$routes = require_once '../routes.php';
+$response = Router::response($routes);
+$renderer = new Renderer('../app/Views');
+echo $renderer->render($response);
