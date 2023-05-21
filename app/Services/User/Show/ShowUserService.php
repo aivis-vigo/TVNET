@@ -22,7 +22,7 @@ class ShowUserService
             throw new ResourceNotFoundException('User not found!');
         }
 
-        $posts = $this->userRepository->fetchUserPosts($request->id());
+        $posts = $this->userRepository->fetchUserArticles($request->id());
 
         return new ShowUserResponse($user, $posts);
     }

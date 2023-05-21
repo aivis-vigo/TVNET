@@ -4,14 +4,17 @@ namespace App\Services\Article\Show;
 
 use App\Exceptions\ResourceNotFoundException;
 use App\Repositories\ArticleRepository;
+use App\Repositories\CommentRepository;
 
 class ShowArticleService
 {
     private ArticleRepository $articleRepository;
+    private CommentRepository $commentRepository;
 
     public function __construct()
     {
         $this->articleRepository = new ArticleRepository();
+        $this->commentRepository = new CommentRepository();
     }
 
     public function execute(ShowArticleRequest $request): ShowArticleResponse
@@ -22,7 +25,7 @@ class ShowArticleService
             throw new ResourceNotFoundException('Article not found!');
         }
 
-        $comments = $this->articleRepository->fetchArticleComments($request->id());
+        $comments = $this->commentRepository->all($request->id());
 
         return new ShowArticleResponse($article, $comments);
     }

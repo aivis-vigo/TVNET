@@ -62,7 +62,7 @@ class UsersRepository
         }
     }
 
-    public function fetchUserPosts(string $id): array
+    public function fetchUserArticles(string $id): array
     {
         try {
             $collected = [];
