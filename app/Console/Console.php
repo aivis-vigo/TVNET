@@ -4,10 +4,10 @@ namespace App\Console;
 
 use App\Models\Article;
 use App\Models\User;
-use App\Services\Article\Index\IndexArticleServices;
+use App\Services\Article\Index\IndexArticleService;
 use App\Services\Article\Show\ShowArticleRequest;
 use App\Services\Article\Show\ShowArticleService;
-use App\Services\User\Index\IndexUserServices;
+use App\Services\User\Index\IndexUserService;
 use App\Services\User\Show\ShowUserRequest;
 use App\Services\User\Show\ShowUserService;
 
@@ -32,7 +32,7 @@ class Console
                     $this->showSingleArticle($response->article());
                 }
 
-                $service = (new IndexArticleServices());
+                $service = (new IndexArticleService());
                 $articles = $service->execute();
                 $this->displayArticles($articles);
 
@@ -44,7 +44,7 @@ class Console
                     $this->showSingleUser($response->user());
                 }
 
-                $service = (new IndexUserServices());
+                $service = (new IndexUserService());
                 $users = $service->execute();
                 $this->displayUsers($users);
 

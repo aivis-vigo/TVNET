@@ -17,6 +17,6 @@
         "twig/twig": "^3.0",
         "ext-json": "*",
         "nesbot/carbon": "^2.66",
-        "ext-http": "*"
+        "php-di/php-di": "^7.0"
     }
 }

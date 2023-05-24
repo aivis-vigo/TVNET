@@ -2,16 +2,15 @@
 
 namespace App\Services\User\Index;
 
-use App\Repositories\User\JsonPlaceholderUsersRepository;
 use App\Repositories\User\UserRepository;
 
-class IndexUserServices
+class IndexUserService
 {
     private UserRepository $userRepository;
 
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
-        $this->userRepository = new JsonPlaceholderUsersRepository();
+        $this->userRepository =$userRepository;
     }
 
     public function execute(): array

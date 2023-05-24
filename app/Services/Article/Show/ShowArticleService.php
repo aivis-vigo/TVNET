@@ -4,19 +4,20 @@ namespace App\Services\Article\Show;
 
 use App\Exceptions\ResourceNotFoundException;
 use App\Repositories\Article\ArticleRepository;
-use App\Repositories\Article\JsonPlaceholderArticleRepository;
 use App\Repositories\Comment\CommentRepository;
-use App\Repositories\Comment\JsonPlaceholderCommentRepository;
 
 class ShowArticleService
 {
     private ArticleRepository $articleRepository;
     private CommentRepository $commentRepository;
 
-    public function __construct()
+    public function __construct(
+        ArticleRepository $articleRepository,
+        CommentRepository $commentRepository
+    )
     {
-        $this->articleRepository = new JsonPlaceholderArticleRepository();
-        $this->commentRepository = new JsonPlaceholderCommentRepository();
+        $this->articleRepository = $articleRepository;
+        $this->commentRepository = $commentRepository;
     }
 
     public function execute(ShowArticleRequest $request): ShowArticleResponse

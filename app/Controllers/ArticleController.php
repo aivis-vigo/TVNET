@@ -4,16 +4,27 @@ namespace App\Controllers;
 
 use App\Core\TwigView;
 use App\Exceptions\ResourceNotFoundException;
-use App\Services\Article\Index\IndexArticleServices;
+use App\Services\Article\Index\IndexArticleService;
 use App\Services\Article\Show\ShowArticleRequest;
 use App\Services\Article\Show\ShowArticleService;
 
 class ArticleController
 {
+    private IndexArticleService $indexArticleService;
+    private ShowArticleService  $showArticleService;
+
+    public function __construct(
+        IndexArticleService $indexArticleService,
+        ShowArticleService $showArticleService
+    )
+    {
+        $this->indexArticleService = $indexArticleService;
+        $this->showArticleService = $showArticleService;
+    }
+
     public function index(): TwigView
     {
-        $service = (new IndexArticleServices());
-        $articles = $service->execute();
+        $articles = $this->indexArticleService->execute();
 
         if (empty($articles)) {
             return new TwigView('notFound', []);
@@ -25,8 +36,7 @@ class ArticleController
     public function show(string $id): TwigView
     {
         try {
-            $service = (new ShowArticleService());
-            $response = $service->execute(new ShowArticleRequest($id));
+            $response = $this->showArticleService->execute(new ShowArticleRequest($id));
 
             return new TwigView('selectedArticle', [
                 'articles' => [$response->article()],
