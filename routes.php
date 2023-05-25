@@ -9,5 +9,5 @@ return [
     ['GET', '/articles/{id:\d+}', [ArticleController::class, 'show']],
     ['GET', '/users', [UsersController::class, 'index']],
     ['GET', '/users/{id:\d+}', [UsersController::class, 'show']],
-    ['GET', '/create', [ArticleController::class, 'create']]
+    ['GET', '/create', [ArticleController::class, 'createForm']]
 ];

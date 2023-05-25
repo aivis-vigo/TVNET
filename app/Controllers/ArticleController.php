@@ -47,8 +47,12 @@ class ArticleController
         }
     }
 
-    public function create(): TwigView
+    public function createForm(): TwigView
     {
+        if ($_REQUEST['title'] != null && $_REQUEST['body'] != null) {
+            $this->indexArticleService->createNewArticle();
+        }
+
         return new TwigView('create', []);
     }
 }

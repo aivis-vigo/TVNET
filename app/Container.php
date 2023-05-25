@@ -4,6 +4,7 @@ namespace App;
 
 use App\Repositories\Article\ArticleRepository;
 use App\Repositories\Article\JsonPlaceholderArticleRepository;
+use App\Repositories\Article\PdoArticleRepository;
 use App\Repositories\Comment\CommentRepository;
 use App\Repositories\Comment\JsonPlaceholderCommentRepository;
 use App\Repositories\User\JsonPlaceholderUsersRepository;
@@ -16,7 +17,7 @@ class Container
     {
         $builder = new ContainerBuilder();
         $builder->addDefinitions([
-            ArticleRepository::class => new JsonPlaceholderArticleRepository(),
+            ArticleRepository::class => new PdoArticleRepository(),//new JsonPlaceholderArticleRepository(),
             UserRepository::class => new JsonPlaceholderUsersRepository(),
             CommentRepository::class => new JsonPlaceholderCommentRepository()
         ]);

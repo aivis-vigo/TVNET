@@ -3,18 +3,26 @@
 namespace App\Services\Article\Index;
 
 use App\Repositories\Article\ArticleRepository;
+use App\Repositories\Article\PdoArticleRepository;
 
 class IndexArticleService
 {
     private ArticleRepository $articleRepository;
+    private PdoArticleRepository $pdoArticleRepository;
 
     public function __construct(ArticleRepository $articleRepository)
     {
         $this->articleRepository = $articleRepository;
+        $this->pdoArticleRepository = new PdoArticleRepository();
     }
 
     public function execute(): array
     {
         return $this->articleRepository->all();
+    }
+
+    public function createNewArticle(): void
+    {
+        $this->pdoArticleRepository->create();
     }
 }
