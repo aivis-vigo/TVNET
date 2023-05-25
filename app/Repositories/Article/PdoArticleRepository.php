@@ -15,7 +15,7 @@ class PdoArticleRepository implements ArticleRepository
         $connectionParams = [
             'dbname' => 'users',
             'user' => 'root',
-            'password' => 'lusija142',
+            'password' => '',
             'host' => 'localhost',
             'driver' => 'pdo_mysql',
         ];
