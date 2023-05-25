@@ -2,26 +2,14 @@
 
 namespace App\Core;
 
-use App\Repositories\Article\ArticleRepository;
-use App\Repositories\Article\JsonPlaceholderArticleRepository;
-use App\Repositories\Comment\CommentRepository;
-use App\Repositories\Comment\JsonPlaceholderCommentRepository;
-use App\Repositories\User\JsonPlaceholderUsersRepository;
-use App\Repositories\User\UserRepository;
-use DI\ContainerBuilder;
+use App\Container;
 use FastRoute;
 
 class Router
 {
     public static function response(array $routes)
     {
-        $builder = new ContainerBuilder();
-        $builder->addDefinitions([
-            ArticleRepository::class => new JsonPlaceholderArticleRepository(),
-            UserRepository::class => new JsonPlaceholderUsersRepository(),
-            CommentRepository::class => new JsonPlaceholderCommentRepository(),
-        ]);
-        $container = $builder->build();
+        $container = Container::build();
 
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $router) use ($routes) {
             foreach ($routes as $route) {

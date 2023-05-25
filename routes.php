@@ -8,5 +8,6 @@ return [
     ['GET', '/articles', [ArticleController::class, 'index']],
     ['GET', '/articles/{id:\d+}', [ArticleController::class, 'show']],
     ['GET', '/users', [UsersController::class, 'index']],
-    ['GET', '/users/{id:\d+}', [UsersController::class, 'show']]
+    ['GET', '/users/{id:\d+}', [UsersController::class, 'show']],
+    ['GET', '/create', [ArticleController::class, 'create']]
 ];

@@ -46,4 +46,9 @@ class ArticleController
             return new TwigView('notFound', []);
         }
     }
+
+    public function create(): TwigView
+    {
+        return new TwigView('create', []);
+    }
 }
