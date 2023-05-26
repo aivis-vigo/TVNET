@@ -30,7 +30,7 @@ class ArticleController
             return new TwigView('notFound', []);
         }
 
-        return new TwigView('articles', ['articles' => $articles]);
+        return new TwigView('indexArticles', ['articles' => $articles]);
     }
 
     public function show(string $id): TwigView
@@ -38,7 +38,7 @@ class ArticleController
         try {
             $response = $this->showArticleService->execute(new ShowArticleRequest($id));
 
-            return new TwigView('selectedArticle', [
+            return new TwigView('showArticle', [
                 'articles' => [$response->article()],
                 'comments' => $response->comments()
             ]);
@@ -49,10 +49,8 @@ class ArticleController
 
     public function createForm(): TwigView
     {
-        if ($_REQUEST['title'] != null && $_REQUEST['body'] != null) {
-            $this->indexArticleService->createNewArticle();
-        }
+        $message = $this->indexArticleService->createNewArticle();
 
-        return new TwigView('create', []);
+        return new TwigView('create', ['status_message' => $message]);
     }
 }

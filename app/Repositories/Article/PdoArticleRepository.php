@@ -11,7 +11,7 @@ class PdoArticleRepository implements ArticleRepository
 
     public function __construct()
     {
-        $dsn = "mysql:host=localhost;port=3306;dbname=users;user=root;password=---;charset=utf8mb4";
+        $dsn = "mysql:host={$_ENV['HOST']};port={$_ENV['port']};dbname={$_ENV['DB_NAME']};user={$_ENV['USER']};password={$_ENV['DB_PASSWORD']};charset=utf8mb4";
         $this->connection = new PDO($dsn);
     }
 
@@ -40,11 +40,15 @@ class PdoArticleRepository implements ArticleRepository
         return $this->buildArticle((object) $article);
     }
 
-    public function create(): void
+    public function create(): string
     {
-        $sql = "INSERT INTO articles (user_id, title, body) VALUES (1, '{$_REQUEST['title']}', '{$_REQUEST['body']}')";
-        $statement= $this->connection->prepare($sql);
-        $statement->execute();
+        if (isset($_REQUEST['title'])) {
+            $sql = "INSERT INTO articles (user_id, title, body) VALUES (1, '{$_REQUEST['title']}', '{$_REQUEST['body']}')";
+            $statement= $this->connection->prepare($sql);
+            $statement->execute();
+            return "Created successfully!";
+        }
+        return "";
     }
 
     private function buildArticle(\stdClass $article): Article

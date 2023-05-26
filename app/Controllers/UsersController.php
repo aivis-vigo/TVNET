@@ -26,7 +26,7 @@ class UsersController
     {
         $users = $this->indexUserService->execute();
 
-        return new TwigView('allUsers', ['users' => $users]);
+        return new TwigView('indexUsers', ['users' => $users]);
     }
 
     public function show(string $id): TwigView
@@ -34,7 +34,7 @@ class UsersController
         try {
             $response = $this->showUserService->execute(new ShowUserRequest($id));
 
-            return new TwigView('singleUser', [
+            return new TwigView('showUser', [
                 'users' => [$response->user()],
                 'posts' => $response->posts()
             ]);

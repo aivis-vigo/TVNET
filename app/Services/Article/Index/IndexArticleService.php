@@ -21,8 +21,8 @@ class IndexArticleService
         return $this->articleRepository->all();
     }
 
-    public function createNewArticle(): void
+    public function createNewArticle(): string
     {
-        $this->pdoArticleRepository->create();
+        return $this->pdoArticleRepository->create();
     }
 }
