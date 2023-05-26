@@ -15,9 +15,9 @@
                         <div class="article-content">
                             <h2>{{ article.title }}</h2>
                             <div class="author">
-                                <div class="grid justify-items-end">
-                                    <button type="button" class="flex px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit</button>
-                                </div>
+                                <a class="grid justify-items-end" href="/edit/{{ article.id }}">
+                                    Edit
+                                </a>
                                 <a href="/users/{{ article.userId }}">
                                     Author ID: {{ article.userId }}
                                 </a>

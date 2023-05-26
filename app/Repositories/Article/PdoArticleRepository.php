@@ -43,12 +43,38 @@ class PdoArticleRepository implements ArticleRepository
     public function create(): string
     {
         if (isset($_REQUEST['title'])) {
-            $sql = "INSERT INTO articles (user_id, title, body) VALUES (1, '{$_REQUEST['title']}', '{$_REQUEST['body']}')";
-            $statement= $this->connection->prepare($sql);
+            $query = "INSERT INTO articles (user_id, title, body) VALUES (1, '{$_REQUEST['title']}', '{$_REQUEST['body']}')";
+            $statement= $this->connection->prepare($query);
             $statement->execute();
             return "Created successfully!";
         }
         return "";
+    }
+
+    public function read(string $id): Article
+    {
+        $query = "SELECT * FROM articles WHERE id=$id";
+        $statement= $this->connection->prepare($query);
+        $statement->execute();
+
+        $post = $statement->fetch(PDO::FETCH_OBJ);
+
+        return new Article(
+            $post->id,
+            $post->user_id,
+            $post->title,
+            $post->body
+        );
+    }
+
+    public function update(): string
+    {
+        if (isset($_GET['title']) && isset($_GET['body'])) {
+            $query = "UPDATE articles SET title='title' WHERE title='newest'";
+            $statement= $this->connection->prepare($query);
+            $statement->execute();
+        }
+        return "Changes made successfully!";
     }
 
     private function buildArticle(\stdClass $article): Article

@@ -49,8 +49,17 @@ class ArticleController
 
     public function createForm(): TwigView
     {
-        $message = $this->indexArticleService->createNewArticle();
+        $message = $this->indexArticleService->createNew();
 
         return new TwigView('create', ['status_message' => $message]);
+    }
+
+    public function read(): TwigView
+    {
+        $id = (basename($_SERVER['REQUEST_URI']));
+        return new TwigView('update', [
+            'contents' => $this->indexArticleService->getArticle($id),
+            'status_message' => $this->indexArticleService->edit()
+        ]);
     }
 }
