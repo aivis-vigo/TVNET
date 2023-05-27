@@ -25,5 +25,8 @@
 4. Single user view 
 <img src="https://github.com/aivis-vigo/TVNET/assets/120174645/f5dec51a-28c5-4da5-a0d6-b9d848dc6530" alt="user_page"><br><br>  
 
-4. Create your own article
+5. Create your own article
 <img src="https://github.com/aivis-vigo/TVNET/assets/120174645/0b01f595-f271-41b3-8877-5ecc352363d2" alt="create_article"><br><br>
+
+6. You can also edit your article
+<img src="https://github.com/aivis-vigo/TVNET/assets/120174645/b5e4b529-fd6c-4029-b063-fb926a7262c9" alt="edit_article"><br><br>
