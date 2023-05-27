@@ -97,14 +97,16 @@ class PdoArticleRepository implements ArticleRepository
         );
     }
 
-    public function update(string $title, string $body): string
+    public function update(string $id, string $title, string $body): string
     {
         $queryBuilder = $this->queryBuilder;
         $queryBuilder
             ->update('articles')
-            ->set('title', $title)
-            ->set('body', $body)
-            ->where('id = ')
+            ->set('title', '?')
+            ->set('body', '?')
+            ->setParameter(0, $title)
+            ->setParameter(1, $body)
+            ->where('id = ' . $id)
             ->executeQuery();
         return "Changes made successfully!";
     }

@@ -40,14 +40,13 @@ class Router
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
-                var_dump($vars);
 
                 [$controllerName, $methodName] = $handler;
 
                 $controller = $container->get($controllerName);
 
                 if (!empty($vars)) {
-                    return $controller->{$methodName}($vars['id']);
+                    return $controller->{$methodName}($vars);
                 }
 
                 return $controller->{$methodName}();

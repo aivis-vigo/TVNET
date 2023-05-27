@@ -29,10 +29,10 @@ class UsersController
         return new TwigView('indexUsers', ['users' => $users]);
     }
 
-    public function show(string $id): TwigView
+    public function show(array $vars): TwigView
     {
         try {
-            $response = $this->showUserService->execute(new ShowUserRequest($id));
+            $response = $this->showUserService->execute(new ShowUserRequest($vars['id']));
 
             return new TwigView('showUser', [
                 'users' => [$response->user()],

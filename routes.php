@@ -11,5 +11,5 @@ return [
     ['GET', '/users/{id:\d+}', [UsersController::class, 'show']],
     ['GET', '/create', [ArticleController::class, 'createForm']],
     ['GET', '/edit/{id:\d+}', [ArticleController::class, 'edit']],
-    ['GET', '/update/{id:\d+}[/{title}]', [ArticleController::class, 'update']]
+    ['GET', '/update/{id:\d+}', [ArticleController::class, 'update']]
 ];
