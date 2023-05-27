@@ -36,4 +36,10 @@ class IndexArticleService
     {
         return $this->pdoArticleRepository->read($id);
     }
+
+    //todo return type
+    public function update(string $title, string $body)
+    {
+        return $this->pdoArticleRepository->update($title, $body);
+    }
 }

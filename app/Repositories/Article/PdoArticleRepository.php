@@ -3,49 +3,77 @@
 namespace App\Repositories\Article;
 
 use App\Models\Article;
-use PDO;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Query\QueryBuilder;
 
 class PdoArticleRepository implements ArticleRepository
 {
-    private PDO $connection;
+    private Connection $connection;
+    private QueryBuilder $queryBuilder;
 
     public function __construct()
     {
-        $dsn = "mysql:host={$_ENV['HOST']};port={$_ENV['port']};dbname={$_ENV['DB_NAME']};user={$_ENV['USER']};password={$_ENV['DB_PASSWORD']};charset=utf8mb4";
-        $this->connection = new PDO($dsn);
+        $connectionParams = [
+            'dbname' => $_ENV['DB_NAME'],
+            'user' => $_ENV['USER'],
+            'password' => $_ENV['DB_PASSWORD'],
+            'host' => $_ENV['HOST'],
+            'driver' => 'pdo_mysql'
+        ];
+        $this->connection = DriverManager::getConnection($connectionParams);
+        $this->queryBuilder = $this->connection->createQueryBuilder();
     }
 
     public function all(): array
     {
         $allUsers = [];
 
-        $statement = $this->connection->prepare("select * from articles");
-        $statement->execute();
+        $queryBuilder = $this->queryBuilder;
 
-        $articles = $statement->fetchAll(PDO::FETCH_CLASS);
+        $results = $queryBuilder
+            ->select("*")
+            ->from('articles')
+            ->fetchAllAssociative();
 
-        foreach ($articles as $article) {
-            $allUsers[] = $this->buildArticle($article);
+        foreach ($results as $article) {
+            $allUsers[] = $this->buildArticle((object) $article);
         }
         return $allUsers;
     }
 
     public function selectById(string $id): ?Article
     {
-        $statement = $this->connection->prepare("select * from articles where id = $id");
-        $statement->execute();
+        $queryBuilder = $this->queryBuilder;
 
-        $article = $statement->fetch();
+        $article = $queryBuilder
+            ->select('*')
+            ->from('articles')
+            ->where('id = ?')
+            ->setParameter(0, $id)
+            ->fetchAssociative();
 
         return $this->buildArticle((object) $article);
     }
 
     public function create(): string
     {
+        $queryBuilder = $this->queryBuilder;
         if (isset($_REQUEST['title'])) {
-            $query = "INSERT INTO articles (user_id, title, body) VALUES (1, '{$_REQUEST['title']}', '{$_REQUEST['body']}')";
-            $statement= $this->connection->prepare($query);
-            $statement->execute();
+            $queryBuilder
+                ->insert('articles')
+                ->values(
+                    [
+                        'user_id' => '?',
+                        'title' => '?',
+                        'body' => '?'
+                    ]
+                )
+                ->setParameter(0, 1)
+                ->setParameter(1, $_REQUEST['title'])
+                ->setParameter(2, $_REQUEST['body'])
+                ->executeQuery();
+
             return "Created successfully!";
         }
         return "";
@@ -53,12 +81,14 @@ class PdoArticleRepository implements ArticleRepository
 
     public function read(string $id): Article
     {
-        $query = "SELECT * FROM articles WHERE id=$id";
-        $statement= $this->connection->prepare($query);
-        $statement->execute();
+        $queryBuilder = $this->queryBuilder;
+        $post = $queryBuilder
+            ->select("*")
+            ->from('articles')
+            ->where('id = ' . $id)
+            ->fetchAssociative();
 
-        $post = $statement->fetch(PDO::FETCH_OBJ);
-
+       $post = (object) $post;
         return new Article(
             $post->id,
             $post->user_id,
@@ -67,13 +97,15 @@ class PdoArticleRepository implements ArticleRepository
         );
     }
 
-    public function update(): string
+    public function update(string $title, string $body): string
     {
-        if (isset($_GET['title']) && isset($_GET['body'])) {
-            $query = "UPDATE articles SET title='title' WHERE title='newest'";
-            $statement= $this->connection->prepare($query);
-            $statement->execute();
-        }
+        $queryBuilder = $this->queryBuilder;
+        $queryBuilder
+            ->update('articles')
+            ->set('title', $title)
+            ->set('body', $body)
+            ->where('id = ')
+            ->executeQuery();
         return "Changes made successfully!";
     }
 

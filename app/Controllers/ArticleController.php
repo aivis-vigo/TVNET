@@ -7,6 +7,7 @@ use App\Exceptions\ResourceNotFoundException;
 use App\Services\Article\Index\IndexArticleService;
 use App\Services\Article\Show\ShowArticleRequest;
 use App\Services\Article\Show\ShowArticleService;
+use function DI\string;
 
 class ArticleController
 {
@@ -54,12 +55,23 @@ class ArticleController
         return new TwigView('create', ['status_message' => $message]);
     }
 
-    public function read(): TwigView
+    public function edit(): TwigView
     {
         $id = (basename($_SERVER['REQUEST_URI']));
         return new TwigView('update', [
             'contents' => $this->indexArticleService->getArticle($id),
-            'status_message' => $this->indexArticleService->edit()
+            //'status_message' => $this->indexArticleService->edit()
+        ]);
+    }
+
+    public function update(): TwigView
+    {
+        $title = $_REQUEST['title'];
+        $body = $_REQUEST['body'];
+        var_dump($title);
+
+        return new TwigView('update', [
+            'status_message' => $this->indexArticleService->update($title, $body)
         ]);
     }
 }

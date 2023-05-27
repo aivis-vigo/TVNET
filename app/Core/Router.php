@@ -40,6 +40,7 @@ class Router
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
+                var_dump($vars);
 
                 [$controllerName, $methodName] = $handler;
 
