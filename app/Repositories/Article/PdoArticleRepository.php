@@ -111,6 +111,17 @@ class PdoArticleRepository implements ArticleRepository
         return "Changes made successfully!";
     }
 
+    public function delete(string $id): string
+    {
+        $queryBuilder = $this->queryBuilder;
+        $queryBuilder
+            ->delete('articles')
+            ->where('id = ?')
+            ->setParameter(0, $id)
+            ->executeQuery();
+        return "Deleted successfully";
+    }
+
     private function buildArticle(\stdClass $article): Article
     {
         return new Article(

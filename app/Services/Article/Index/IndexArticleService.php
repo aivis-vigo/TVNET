@@ -36,4 +36,9 @@ class IndexArticleService
     {
         return $this->pdoArticleRepository->update($id, $title, $body);
     }
+
+    public function delete(string $id): string
+    {
+        return $this->pdoArticleRepository->delete($id);
+    }
 }

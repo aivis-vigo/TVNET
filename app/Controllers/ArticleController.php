@@ -68,4 +68,11 @@ class ArticleController
             'status_message' => $this->indexArticleService->update($vars['id'], $_REQUEST['title'], $_REQUEST['body'])
         ]);
     }
+
+    public function delete(array $vars): TwigView
+    {
+        return new TwigView('delete', [
+            'status_message' => $this->indexArticleService->delete($vars['id'])
+        ]);
+    }
 }
