@@ -27,11 +27,6 @@ class IndexArticleService
         return $this->pdoArticleRepository->create();
     }
 
-    public function edit(): string
-    {
-        return $this->pdoArticleRepository->update();
-    }
-
     public function getArticle(string $id): Article
     {
         return $this->pdoArticleRepository->read($id);
