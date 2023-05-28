@@ -108,7 +108,7 @@ class PdoArticleRepository implements ArticleRepository
             ->setParameter(1, $body)
             ->where('id = ' . $id)
             ->executeQuery();
-        return "Changes made successfully!";
+        return "Updated successfully!";
     }
 
     public function delete(string $id): string

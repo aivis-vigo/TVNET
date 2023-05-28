@@ -49,9 +49,10 @@ class ArticleController
 
     public function createForm(): TwigView
     {
-        $message = $this->indexArticleService->createNew();
-
-        return new TwigView('create', ['status_message' => $message]);
+        return new TwigView('create', [
+            'status_message' => $this->indexArticleService->createNew(),
+            'color' => 'green'
+        ]);
     }
 
     public function edit(): TwigView
@@ -59,20 +60,23 @@ class ArticleController
         $id = (basename($_SERVER['REQUEST_URI']));
         return new TwigView('update', [
             'contents' => $this->indexArticleService->getArticle($id),
+            'color' => 'green'
         ]);
     }
 
     public function update(array $vars): TwigView
     {
-        return new TwigView('update', [
-            'status_message' => $this->indexArticleService->update($vars['id'], $_REQUEST['title'], $_REQUEST['body'])
+        return new TwigView('status', [
+            'status_message' => $this->indexArticleService->update($vars['id'], $_REQUEST['title'], $_REQUEST['body']),
+            'color' => 'green'
         ]);
     }
 
     public function delete(array $vars): TwigView
     {
-        return new TwigView('delete', [
-            'status_message' => $this->indexArticleService->delete($vars['id'])
+        return new TwigView('status', [
+            'status_message' => $this->indexArticleService->delete($vars['id']),
+            'color' => 'red'
         ]);
     }
 }
