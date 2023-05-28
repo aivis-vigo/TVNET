@@ -2,7 +2,6 @@
 
 namespace App\Services\Article\Index;
 
-use App\Models\Article;
 use App\Repositories\Article\ArticleRepository;
 use App\Repositories\Article\PdoArticleRepository;
 
@@ -20,16 +19,6 @@ class IndexArticleService
     public function execute(): array
     {
         return $this->articleRepository->all();
-    }
-
-    public function create(array $article): string
-    {
-        return $this->pdoArticleRepository->create($article);
-    }
-
-    public function read(string $id): Article
-    {
-        return $this->pdoArticleRepository->read($id);
     }
 
     public function update(string $id, array $content): string

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Services\Article\Create;
+namespace App\Services\Article\Read;
 
 use App\Repositories\Article\PdoArticleRepository;
 
-class CreateArticleService
+class ReadArticleService
 {
     private PdoArticleRepository $pdoArticleRepository;
 
@@ -13,10 +13,11 @@ class CreateArticleService
         $this->pdoArticleRepository = $pdoArticleRepository;
     }
 
-    public function execute(CreateArticleRequest $request): CreateArticleResponse
+    public function execute(ReadArticleRequest $request): ReadArticleResponse
     {
-        $article = $this->pdoArticleRepository->create($request->title(), $request->body());
+        var_dump('aaa');
+        $article = $this->pdoArticleRepository->read($request->id());
 
-        return new CreateArticleResponse($article);
+        return new ReadArticleResponse($article);
     }
 }

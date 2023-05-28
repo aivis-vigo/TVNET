@@ -4,26 +4,33 @@ namespace App\Controllers;
 
 use App\Core\TwigView;
 use App\Exceptions\ResourceNotFoundException;
+use App\Services\Article\Create\CreateArticleRequest;
 use App\Services\Article\Create\CreateArticleService;
 use App\Services\Article\Index\IndexArticleService;
+use App\Services\Article\Read\ReadArticleRequest;
+use App\Services\Article\Read\ReadArticleResponse;
+use App\Services\Article\Read\ReadArticleService;
 use App\Services\Article\Show\ShowArticleRequest;
 use App\Services\Article\Show\ShowArticleService;
 
 class ArticleController
 {
     private IndexArticleService $indexArticleService;
-    private ShowArticleService  $showArticleService;
+    private ShowArticleService $showArticleService;
     private CreateArticleService $createArticleService;
+    private ReadArticleService $readArticleService;
 
     public function __construct(
-        IndexArticleService $indexArticleService,
-        ShowArticleService $showArticleService,
-        CreateArticleService $createArticleService
+        IndexArticleService  $indexArticleService,
+        ShowArticleService   $showArticleService,
+        CreateArticleService $createArticleService,
+        ReadArticleService $readArticleService
     )
     {
         $this->indexArticleService = $indexArticleService;
         $this->showArticleService = $showArticleService;
         $this->createArticleService = $createArticleService;
+        $this->readArticleService = $readArticleService;
     }
 
     public function index(): TwigView
@@ -40,7 +47,11 @@ class ArticleController
     public function show(array $vars): TwigView
     {
         try {
-            $response = $this->showArticleService->execute(new ShowArticleRequest($vars['id']));
+            $response = $this->showArticleService->execute(
+                new ShowArticleRequest(
+                    $vars['id']
+                )
+            );
 
             return new TwigView('showArticle', [
                 'articles' => [$response->article()],
@@ -58,8 +69,15 @@ class ArticleController
 
     public function store(): TwigView
     {
+        $createArticleResponse = $this->createArticleService->execute(
+            new CreateArticleRequest(
+                $_POST['title'],
+                $_POST['body']
+            )
+        );
+
         return new TwigView('articles/status', [
-            'status_message' => $this->indexArticleService->create($_POST),
+            'status_message' => $createArticleResponse->status(),
             'color' => 'green'
         ]);
     }
@@ -68,8 +86,12 @@ class ArticleController
     {
         $id = (basename($_SERVER['REQUEST_URI']));
 
+        $article = $this->readArticleService->execute(
+            new ReadArticleRequest($id)
+        );
+
         return new TwigView('articles/update', [
-            'contents' => $this->indexArticleService->read($id),
+            'contents' => $article,
             'color' => 'green'
         ]);
     }

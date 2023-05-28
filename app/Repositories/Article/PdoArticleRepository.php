@@ -3,6 +3,7 @@
 namespace App\Repositories\Article;
 
 use App\Models\Article;
+use App\Services\Article\Create\CreateArticleResponse;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -56,7 +57,7 @@ class PdoArticleRepository implements ArticleRepository
         return $this->buildArticle((object) $article);
     }
 
-    public function create(array $article): string
+    public function create(string $title, string $body): string// array $article
     {
         $queryBuilder = $this->queryBuilder;
         if (isset($_REQUEST['title'])) {
@@ -70,8 +71,8 @@ class PdoArticleRepository implements ArticleRepository
                     ]
                 )
                 ->setParameter(0, 1)
-                ->setParameter(1, $article['title'])
-                ->setParameter(2, $article['body'])
+                ->setParameter(1, $title)
+                ->setParameter(2, $body)
                 ->executeQuery();
 
             return "Created successfully!";
