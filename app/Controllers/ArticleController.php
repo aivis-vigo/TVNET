@@ -6,6 +6,8 @@ use App\Core\TwigView;
 use App\Exceptions\ResourceNotFoundException;
 use App\Services\Article\Create\CreateArticleRequest;
 use App\Services\Article\Create\CreateArticleService;
+use App\Services\Article\Delete\DeleteArticleService;
+use App\Services\Article\Delete\DeleteArticleRequest;
 use App\Services\Article\Index\IndexArticleService;
 use App\Services\Article\Read\ReadArticleRequest;
 use App\Services\Article\Read\ReadArticleService;
@@ -21,13 +23,15 @@ class ArticleController
     private CreateArticleService $createArticleService;
     private ReadArticleService $readArticleService;
     private UpdateArticleService $updateArticleService;
+    private DeleteArticleService $deleteArticleService;
 
     public function __construct(
         IndexArticleService  $indexArticleService,
         ShowArticleService   $showArticleService,
         CreateArticleService $createArticleService,
         ReadArticleService   $readArticleService,
-        UpdateArticleService $updateArticleService
+        UpdateArticleService $updateArticleService,
+        DeleteArticleService $deleteArticleService
     )
     {
         $this->indexArticleService = $indexArticleService;
@@ -35,6 +39,7 @@ class ArticleController
         $this->createArticleService = $createArticleService;
         $this->readArticleService = $readArticleService;
         $this->updateArticleService = $updateArticleService;
+        $this->deleteArticleService = $deleteArticleService;
     }
 
     public function index(): TwigView
@@ -118,8 +123,14 @@ class ArticleController
 
     public function delete(array $vars): TwigView
     {
+        $message = $this->deleteArticleService->execute(
+            new DeleteArticleRequest(
+                $vars['id']
+            )
+        );
+
         return new TwigView('articles/status', [
-            'status_message' => $this->indexArticleService->delete($vars['id']),
+            'status_message' => $message->status(),
             'color' => 'red'
         ]);
     }
