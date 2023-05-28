@@ -37,7 +37,7 @@ class PdoArticleRepository implements ArticleRepository
             ->fetchAllAssociative();
 
         foreach ($results as $article) {
-            $allUsers[] = $this->buildArticle((object) $article);
+            $allUsers[] = $this->buildArticle((object)$article);
         }
         return $allUsers;
     }
@@ -56,7 +56,7 @@ class PdoArticleRepository implements ArticleRepository
         return $this->buildArticle((object) $article);
     }
 
-    public function create(): string
+    public function create(array $article): string
     {
         $queryBuilder = $this->queryBuilder;
         if (isset($_REQUEST['title'])) {
@@ -70,8 +70,8 @@ class PdoArticleRepository implements ArticleRepository
                     ]
                 )
                 ->setParameter(0, 1)
-                ->setParameter(1, $_REQUEST['title'])
-                ->setParameter(2, $_REQUEST['body'])
+                ->setParameter(1, $article['title'])
+                ->setParameter(2, $article['body'])
                 ->executeQuery();
 
             return "Created successfully!";
@@ -88,24 +88,20 @@ class PdoArticleRepository implements ArticleRepository
             ->where('id = ' . $id)
             ->fetchAssociative();
 
-       $post = (object) $post;
-        return new Article(
-            $post->id,
-            $post->user_id,
-            $post->title,
-            $post->body
-        );
+        $article = (object) $post;
+
+        return $this->buildArticle($article);
     }
 
-    public function update(string $id, string $title, string $body): string
+    public function update(string $id, array $content): string
     {
         $queryBuilder = $this->queryBuilder;
         $queryBuilder
             ->update('articles')
             ->set('title', '?')
             ->set('body', '?')
-            ->setParameter(0, $title)
-            ->setParameter(1, $body)
+            ->setParameter(0, $content['title'])
+            ->setParameter(1, $content['body'])
             ->where('id = ' . $id)
             ->executeQuery();
         return "Updated successfully!";
@@ -128,7 +124,8 @@ class PdoArticleRepository implements ArticleRepository
             $article->id,
             $article->user_id,
             $article->title,
-            $article->body
+            $article->body,
+            $article->created_at
         );
     }
 }

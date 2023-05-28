@@ -22,19 +22,19 @@ class IndexArticleService
         return $this->articleRepository->all();
     }
 
-    public function createNew(): string
+    public function create(array $article): string
     {
-        return $this->pdoArticleRepository->create();
+        return $this->pdoArticleRepository->create($article);
     }
 
-    public function getArticle(string $id): Article
+    public function read(string $id): Article
     {
         return $this->pdoArticleRepository->read($id);
     }
 
-    public function update(string $id, string $title, string $body): string
+    public function update(string $id, array $content): string
     {
-        return $this->pdoArticleRepository->update($id, $title, $body);
+        return $this->pdoArticleRepository->update($id, $content);
     }
 
     public function delete(string $id): string

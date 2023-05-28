@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\TwigView;
 use App\Exceptions\ResourceNotFoundException;
+use App\Services\Article\Create\CreateArticleService;
 use App\Services\Article\Index\IndexArticleService;
 use App\Services\Article\Show\ShowArticleRequest;
 use App\Services\Article\Show\ShowArticleService;
@@ -12,14 +13,17 @@ class ArticleController
 {
     private IndexArticleService $indexArticleService;
     private ShowArticleService  $showArticleService;
+    private CreateArticleService $createArticleService;
 
     public function __construct(
         IndexArticleService $indexArticleService,
-        ShowArticleService $showArticleService
+        ShowArticleService $showArticleService,
+        CreateArticleService $createArticleService
     )
     {
         $this->indexArticleService = $indexArticleService;
         $this->showArticleService = $showArticleService;
+        $this->createArticleService = $createArticleService;
     }
 
     public function index(): TwigView
@@ -47,10 +51,15 @@ class ArticleController
         }
     }
 
-    public function createForm(): TwigView
+    public function create(): TwigView
     {
-        return new TwigView('create', [
-            'status_message' => $this->indexArticleService->createNew(),
+        return new TwigView('articles/create', []);
+    }
+
+    public function store(): TwigView
+    {
+        return new TwigView('articles/status', [
+            'status_message' => $this->indexArticleService->create($_POST),
             'color' => 'green'
         ]);
     }
@@ -58,23 +67,24 @@ class ArticleController
     public function edit(): TwigView
     {
         $id = (basename($_SERVER['REQUEST_URI']));
-        return new TwigView('update', [
-            'contents' => $this->indexArticleService->getArticle($id),
+
+        return new TwigView('articles/update', [
+            'contents' => $this->indexArticleService->read($id),
             'color' => 'green'
         ]);
     }
 
     public function update(array $vars): TwigView
     {
-        return new TwigView('status', [
-            'status_message' => $this->indexArticleService->update($vars['id'], $_REQUEST['title'], $_REQUEST['body']),
+        return new TwigView('articles/status', [
+            'status_message' => $this->indexArticleService->update($vars['id'], $_POST),
             'color' => 'green'
         ]);
     }
 
     public function delete(array $vars): TwigView
     {
-        return new TwigView('status', [
+        return new TwigView('articles/status', [
             'status_message' => $this->indexArticleService->delete($vars['id']),
             'color' => 'red'
         ]);

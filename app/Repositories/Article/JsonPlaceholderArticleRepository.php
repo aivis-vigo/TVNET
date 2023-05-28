@@ -66,7 +66,8 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
             $article->id,
             $article->userId,
             $article->title,
-            $article->body
+            $article->body,
+            $article->created_at
         );
     }
 }
