@@ -15,7 +15,6 @@ class ReadArticleService
 
     public function execute(ReadArticleRequest $request): ReadArticleResponse
     {
-        var_dump('aaa');
         $article = $this->pdoArticleRepository->read($request->id());
 
         return new ReadArticleResponse($article);

@@ -2,8 +2,6 @@
 
 namespace App\Services\Article\Read;
 
-use App\Models\Article;
-
 class ReadArticleRequest
 {
     private string $id;

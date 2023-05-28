@@ -8,10 +8,11 @@ use App\Services\Article\Create\CreateArticleRequest;
 use App\Services\Article\Create\CreateArticleService;
 use App\Services\Article\Index\IndexArticleService;
 use App\Services\Article\Read\ReadArticleRequest;
-use App\Services\Article\Read\ReadArticleResponse;
 use App\Services\Article\Read\ReadArticleService;
 use App\Services\Article\Show\ShowArticleRequest;
 use App\Services\Article\Show\ShowArticleService;
+use App\Services\Article\Update\UpdateArticleRequest;
+use App\Services\Article\Update\UpdateArticleService;
 
 class ArticleController
 {
@@ -19,18 +20,21 @@ class ArticleController
     private ShowArticleService $showArticleService;
     private CreateArticleService $createArticleService;
     private ReadArticleService $readArticleService;
+    private UpdateArticleService $updateArticleService;
 
     public function __construct(
         IndexArticleService  $indexArticleService,
         ShowArticleService   $showArticleService,
         CreateArticleService $createArticleService,
-        ReadArticleService $readArticleService
+        ReadArticleService   $readArticleService,
+        UpdateArticleService $updateArticleService
     )
     {
         $this->indexArticleService = $indexArticleService;
         $this->showArticleService = $showArticleService;
         $this->createArticleService = $createArticleService;
         $this->readArticleService = $readArticleService;
+        $this->updateArticleService = $updateArticleService;
     }
 
     public function index(): TwigView
@@ -98,8 +102,16 @@ class ArticleController
 
     public function update(array $vars): TwigView
     {
+        $message = $this->updateArticleService->execute(
+            new UpdateArticleRequest(
+                $vars['id'],
+                $_POST['title'],
+                $_POST['body']
+            )
+        );
+
         return new TwigView('articles/status', [
-            'status_message' => $this->indexArticleService->update($vars['id'], $_POST),
+            'status_message' => $message->status(),
             'color' => 'green'
         ]);
     }

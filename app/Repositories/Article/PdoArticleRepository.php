@@ -54,7 +54,7 @@ class PdoArticleRepository implements ArticleRepository
             ->setParameter(0, $id)
             ->fetchAssociative();
 
-        return $this->buildArticle((object) $article);
+        return $this->buildArticle((object)$article);
     }
 
     public function create(string $title, string $body): string// array $article
@@ -89,20 +89,24 @@ class PdoArticleRepository implements ArticleRepository
             ->where('id = ' . $id)
             ->fetchAssociative();
 
-        $article = (object) $post;
+        $article = (object)$post;
 
         return $this->buildArticle($article);
     }
 
-    public function update(string $id, array $content): string
+    public function update(
+        string $id,
+        string $title,
+        string $body
+    ): string
     {
         $queryBuilder = $this->queryBuilder;
         $queryBuilder
             ->update('articles')
             ->set('title', '?')
             ->set('body', '?')
-            ->setParameter(0, $content['title'])
-            ->setParameter(1, $content['body'])
+            ->setParameter(0, $title)
+            ->setParameter(1, $body)
             ->where('id = ' . $id)
             ->executeQuery();
         return "Updated successfully!";

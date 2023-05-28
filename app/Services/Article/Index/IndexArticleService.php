@@ -21,11 +21,6 @@ class IndexArticleService
         return $this->articleRepository->all();
     }
 
-    public function update(string $id, array $content): string
-    {
-        return $this->pdoArticleRepository->update($id, $content);
-    }
-
     public function delete(string $id): string
     {
         return $this->pdoArticleRepository->delete($id);
