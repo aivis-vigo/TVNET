@@ -3,7 +3,6 @@
 namespace App\Repositories\Article;
 
 use App\Models\Article;
-use App\Services\Article\Create\CreateArticleResponse;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -20,8 +19,9 @@ class PdoArticleRepository implements ArticleRepository
             'user' => $_ENV['USER'],
             'password' => $_ENV['DB_PASSWORD'],
             'host' => $_ENV['HOST'],
-            'driver' => 'pdo_mysql'
+            'driver' => $_ENV['DRIVER']
         ];
+
         $this->connection = DriverManager::getConnection($connectionParams);
         $this->queryBuilder = $this->connection->createQueryBuilder();
     }
@@ -40,10 +40,11 @@ class PdoArticleRepository implements ArticleRepository
         foreach ($results as $article) {
             $allUsers[] = $this->buildArticle((object)$article);
         }
+
         return $allUsers;
     }
 
-    public function selectById(string $id): ?Article
+    public function selectById(string $id): Article
     {
         $queryBuilder = $this->queryBuilder;
 
@@ -57,27 +58,24 @@ class PdoArticleRepository implements ArticleRepository
         return $this->buildArticle((object)$article);
     }
 
-    public function create(string $title, string $body): string// array $article
+    public function create(Article $article): void
     {
         $queryBuilder = $this->queryBuilder;
-        if (isset($_REQUEST['title'])) {
-            $queryBuilder
-                ->insert('articles')
-                ->values(
-                    [
-                        'user_id' => '?',
-                        'title' => '?',
-                        'body' => '?'
-                    ]
-                )
-                ->setParameter(0, 1)
-                ->setParameter(1, $title)
-                ->setParameter(2, $body)
-                ->executeQuery();
+        $queryBuilder
+            ->insert('articles')
+            ->values(
+                [
+                    'user_id' => '?',
+                    'title' => '?',
+                    'body' => '?'
+                ]
+            )
+            ->setParameter(0, $article->userId())
+            ->setParameter(1, $article->title())
+            ->setParameter(2, $article->body())
+            ->executeQuery();
 
-            return "Created successfully!";
-        }
-        return "";
+        $article->setId((int)$this->connection->lastInsertId());
     }
 
     public function read(string $id): Article
@@ -95,10 +93,10 @@ class PdoArticleRepository implements ArticleRepository
     }
 
     public function update(
-        string $id,
+        int    $id,
         string $title,
         string $body
-    ): string
+    ): void
     {
         $queryBuilder = $this->queryBuilder;
         $queryBuilder
@@ -109,10 +107,10 @@ class PdoArticleRepository implements ArticleRepository
             ->setParameter(1, $body)
             ->where('id = ' . $id)
             ->executeQuery();
-        return "Updated successfully!";
     }
 
-    public function delete(string $id): string
+
+    public function delete(string $id): void
     {
         $queryBuilder = $this->queryBuilder;
         $queryBuilder
@@ -120,17 +118,17 @@ class PdoArticleRepository implements ArticleRepository
             ->where('id = ?')
             ->setParameter(0, $id)
             ->executeQuery();
-        return "Deleted successfully";
     }
 
     private function buildArticle(\stdClass $article): Article
     {
         return new Article(
-            $article->id,
             $article->user_id,
             $article->title,
             $article->body,
-            $article->created_at
+            "https://placehold.co/600x400/png",
+            $article->created_at,
+            $article->id
         );
     }
 }

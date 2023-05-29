@@ -2,17 +2,19 @@
 
 namespace App\Services\Article\Create;
 
+use App\Models\Article;
+
 class CreateArticleResponse
 {
-    private string $status;
+    private Article $article;
 
-    public function __construct(string $status)
+    public function __construct(Article $article)
     {
-        $this->status = $status;
+        $this->article = $article;
     }
 
-    public function status(): string
+    public function article(): Article
     {
-        return $this->status;
+        return $this->article;
     }
 }

@@ -2,20 +2,29 @@
 
 namespace App\Services\Article\Create;
 
-use App\Repositories\Article\PdoArticleRepository;
+use App\Models\Article;
+use App\Repositories\Article\ArticleRepository;
+
 
 class CreateArticleService
 {
-    private PdoArticleRepository $pdoArticleRepository;
+    private ArticleRepository $articleRepository;
 
-    public function __construct(PdoArticleRepository $pdoArticleRepository)
+    public function __construct(ArticleRepository $articleRepository)
     {
-        $this->pdoArticleRepository = $pdoArticleRepository;
+        $this->articleRepository = $articleRepository;
     }
 
     public function execute(CreateArticleRequest $request): CreateArticleResponse
     {
-        $article = $this->pdoArticleRepository->create($request->title(), $request->body());
+        $article = new Article(
+            1,
+            $request->title(),
+            $request->body(),
+            "https://placehold.co/600x400/png"
+        );
+
+        $this->articleRepository->create($article);
 
         return new CreateArticleResponse($article);
     }

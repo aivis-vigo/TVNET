@@ -2,17 +2,19 @@
 
 namespace App\Services\Article\Update;
 
+use App\Models\Article;
+
 class UpdateArticleResponse
 {
-    private string $status;
+    private string $id;
 
-    public function __construct(string $message)
+    public function __construct(string $id)
     {
-        $this->status = $message;
+        $this->id = $id;
     }
 
-    public function status(): string
+    public function id(): id
     {
-        return $this->status;
+        return $this->id;
     }
 }

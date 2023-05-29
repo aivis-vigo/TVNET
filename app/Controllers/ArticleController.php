@@ -56,9 +56,10 @@ class ArticleController
     public function show(array $vars): TwigView
     {
         try {
+            $articleId = $vars['id'] ?? null;
             $response = $this->showArticleService->execute(
                 new ShowArticleRequest(
-                    $vars['id']
+                    $articleId
                 )
             );
 
@@ -76,7 +77,7 @@ class ArticleController
         return new TwigView('articles/create', []);
     }
 
-    public function store(): TwigView
+    public function store()
     {
         $createArticleResponse = $this->createArticleService->execute(
             new CreateArticleRequest(
@@ -85,29 +86,28 @@ class ArticleController
             )
         );
 
-        return new TwigView('articles/status', [
-            'status_message' => $createArticleResponse->status(),
-            'color' => 'green'
-        ]);
+        $article = $createArticleResponse->article();
+
+        // Redirect
+        header('Location: /articles/' . $article->id());
     }
 
     public function edit(): TwigView
     {
-        $id = (basename($_SERVER['REQUEST_URI']));
+        $id = explode("/", $_SERVER['REQUEST_URI']);
 
         $article = $this->readArticleService->execute(
-            new ReadArticleRequest($id)
+            new ReadArticleRequest($id[2])
         );
 
         return new TwigView('articles/update', [
-            'contents' => $article,
-            'color' => 'green'
+            'contents' => $article
         ]);
     }
 
-    public function update(array $vars): TwigView
+    public function update(array $vars)
     {
-        $message = $this->updateArticleService->execute(
+        $this->updateArticleService->execute(
             new UpdateArticleRequest(
                 $vars['id'],
                 $_POST['title'],
@@ -115,23 +115,17 @@ class ArticleController
             )
         );
 
-        return new TwigView('articles/status', [
-            'status_message' => $message->status(),
-            'color' => 'green'
-        ]);
+        header('Location: /articles/' . $vars['id']);
     }
 
     public function delete(array $vars): TwigView
     {
-        $message = $this->deleteArticleService->execute(
+        $this->deleteArticleService->execute(
             new DeleteArticleRequest(
                 $vars['id']
             )
         );
 
-        return new TwigView('articles/status', [
-            'status_message' => $message->status(),
-            'color' => 'red'
-        ]);
+        header('Location: /articles');
     }
 }

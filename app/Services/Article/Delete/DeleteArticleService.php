@@ -13,12 +13,10 @@ class DeleteArticleService
         $this->pdoArticleRepository = $pdoArticleRepository;
     }
 
-    public function execute(DeleteArticleRequest $request): DeleteArticleResponse
+    public function execute(DeleteArticleRequest $request): void
     {
-        $article = $this->pdoArticleRepository->delete(
+        $this->pdoArticleRepository->delete(
             $request->id()
         );
-
-        return new DeleteArticleResponse($article);
     }
 }

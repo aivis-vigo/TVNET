@@ -2,25 +2,22 @@
 
 namespace App\Services\Article\Update;
 
-use App\Repositories\Article\PdoArticleRepository;
+use App\Models\Article;
+use App\Repositories\Article\ArticleRepository;
 
 class UpdateArticleService
 {
-    private PdoArticleRepository $pdoArticleRepository;
+    private ArticleRepository $articleRepository;
 
-    public function __construct(PdoArticleRepository $pdoArticleRepository)
+    public function __construct(ArticleRepository $articleRepository)
     {
-        $this->pdoArticleRepository = $pdoArticleRepository;
+        $this->articleRepository = $articleRepository;
     }
 
     public function execute(UpdateArticleRequest $request): UpdateArticleResponse
     {
-        $article = $this->pdoArticleRepository->update(
-            $request->id(),
-            $request->title(),
-            $request->body()
-        );
+        $this->articleRepository->update((int) $request->id(), $request->title(), $request->body());
 
-        return new UpdateArticleResponse($article);
+        return new UpdateArticleResponse($request->id());
     }
 }

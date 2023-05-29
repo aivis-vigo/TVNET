@@ -9,7 +9,7 @@ class CreateArticleRequest
 
     public function __construct(
         string $title,
-        string $body
+        string  $body
     )
     {
         $this->title = $title;

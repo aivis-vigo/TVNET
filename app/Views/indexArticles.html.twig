@@ -13,7 +13,7 @@
                 <a href="articles/{{ article.id }}">
                     <div class="m-8 h-full">
                         <div class="shadow-lg">
-                            <img src="https://placehold.co/345x255/png" alt="article_{{ article.id }}"
+                            <img src="{{ article.picture }}" alt="article_{{ article.id }}"
                                  class="w-full object-cover h-32 sm:h-48 md:h-64">
                             <div class=" p-2 items-center bg-white rounded-b-lg">
                                 <p>{{ article.title }}</p>
