@@ -13,7 +13,7 @@ class UpdateArticleResponse
         $this->id = $id;
     }
 
-    public function id(): id
+    public function id(): string
     {
         return $this->id;
     }
