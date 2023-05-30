@@ -5,7 +5,7 @@ use App\Controllers\UsersController;
 
 return [
     // Users
-    ['GET', '/', [ArticleController::class, 'index']],
+    //['GET', '/', [ArticleController::class, 'index']],
     ['GET', '/users', [UsersController::class, 'index']],
     ['GET', '/users/{id:\d+}', [UsersController::class, 'show']],
 
@@ -22,5 +22,13 @@ return [
     ['POST', '/articles', [ArticleController::class, 'store']],
 
     // Delete
-    ['GET', '/delete/{id:\d+}', [ArticleController::class, 'delete']]
+    ['GET', '/delete/{id:\d+}', [ArticleController::class, 'delete']],
+
+    // Login
+    ['GET', '/', [UsersController::class, 'authorize']],
+    ['POST', '/login/validate', [UsersController::class, 'validateLogin']],
+
+    // Register
+    ['GET', '/register', [UsersController::class, 'register']],
+    ['POST', '/register/validate', [UsersController::class, 'validateRegistration']],
 ];
