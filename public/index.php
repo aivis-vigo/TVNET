@@ -5,6 +5,8 @@ require_once "../vendor/autoload.php";
 use App\Core\Renderer;
 use App\Core\Router;
 
+session_start();
+
 $dotenv = Dotenv\Dotenv::createImmutable('../');
 $dotenv->load();
 
