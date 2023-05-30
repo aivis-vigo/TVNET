@@ -86,7 +86,6 @@ class UsersController
 
     public function validateLogin()
     {
-        // todo: fix repository and service return
         $user = $this->readUserService->execute(new ReadUserRequest($_POST));
 
         $input = password_hash($_POST['password'], PASSWORD_DEFAULT);
