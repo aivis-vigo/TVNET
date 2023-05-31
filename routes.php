@@ -26,9 +26,9 @@ return [
 
     // Login
     ['GET', '/login', [UsersController::class, 'authorize']],
-    ['POST', '/login/validate', [UsersController::class, 'validateLogin']],
+    ['POST', '/login', [UsersController::class, 'validateLogin']],
 
     // Register
     ['GET', '/register', [UsersController::class, 'register']],
-    ['POST', '/register/validate', [UsersController::class, 'validateRegistration']],
+    ['POST', '/register', [UsersController::class, 'validateRegistration']],
 ];

@@ -61,7 +61,7 @@ class UsersController
     public function authorize(): TwigView
     {
         return new TwigView('authorize/login', [
-            'action' => '/login/validate',
+            'action' => '/login',
             'method' => 'POST',
             'message' => 'Sign in to your account',
             'optionLabel' => 'Don’t have an account yet?',
@@ -74,13 +74,13 @@ class UsersController
     public function register(): TwigView
     {
         return new TwigView('authorize/register', [
-            'action' => '/register/validate',
+            'action' => '/register',
             'method' => 'POST',
             'message' => 'Create your account',
             'optionLabel' => 'Already have an account?',
             'button' => 'Sign Up',
             'option' => 'Login',
-            'route' => '/'
+            'route' => '/login'
         ]);
     }
 
@@ -96,13 +96,13 @@ class UsersController
         }
 
         return new TwigView('authorize/login', [
-            'action' => '/login/validate',
+            'action' => '/login',
             'method' => 'POST',
             'message' => 'Sign in to your account',
             'optionLabel' => 'Don’t have an account yet?',
             'button' => 'Sign In',
             'option' => 'Create',
-            'route' => '/',
+            'route' => '/register',
             'error_message' => 'Wrong email or password provided!'
         ]);
     }
@@ -115,13 +115,13 @@ class UsersController
             header('Location: /articles');
         } catch (UniqueConstraintViolationException|DriverException $exception) {
             return new TwigView('authorize/register', [
-                'action' => '/registration/validate',
+                'action' => '/register',
                 'method' => 'POST',
                 'message' => 'Create your account',
                 'optionLabel' => 'Already have an account?',
                 'button' => 'Sign Up',
                 'option' => 'Login',
-                'route' => '/',
+                'route' => '/login',
                 'error_message' => 'Email already in use or password exceeds 30 characters!'
             ]);
         }
