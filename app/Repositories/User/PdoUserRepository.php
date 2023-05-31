@@ -2,7 +2,6 @@
 
 namespace App\Repositories\User;
 
-use App\Models\User;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Query\QueryBuilder;
