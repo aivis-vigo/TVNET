@@ -73,7 +73,7 @@ class UsersController
 
     public function register(): TwigView
     {
-        return new TwigView('authorize/login', [
+        return new TwigView('authorize/register', [
             'action' => '/register/validate',
             'method' => 'POST',
             'message' => 'Create your account',
@@ -111,8 +111,10 @@ class UsersController
     {
         try {
             $this->createUserService->execute(new CreateUserRequest($_POST));
+
+            header('Location: /articles');
         } catch (UniqueConstraintViolationException|DriverException $exception) {
-            return new TwigView('authorize/login', [
+            return new TwigView('authorize/register', [
                 'action' => '/registration/validate',
                 'method' => 'POST',
                 'message' => 'Create your account',
@@ -123,7 +125,5 @@ class UsersController
                 'error_message' => 'Email already in use or password exceeds 30 characters!'
             ]);
         }
-
-        header('Location: /articles');
     }
 }

@@ -98,7 +98,7 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
 
     public function read(string $id): Article
     {
-        return $this->read($id);
+
     }
 
     public function update(
