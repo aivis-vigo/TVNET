@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\Redirect;
 use App\Core\TwigView;
 use App\Exceptions\ResourceNotFoundException;
 use App\Services\Article\Create\CreateArticleRequest;
@@ -114,7 +115,7 @@ class ArticleController
         ]);
     }
 
-    public function update(array $vars)
+    public function update(array $vars): Redirect
     {
         $this->updateArticleService->execute(
             new UpdateArticleRequest(
@@ -124,7 +125,7 @@ class ArticleController
             )
         );
 
-        header('Location: /articles/' . $vars['id']);
+        return new Redirect('/articles/' . $vars['id']);
     }
 
     public function delete(array $vars)

@@ -12,5 +12,13 @@ $dotenv->load();
 
 $routes = require_once '../routes.php';
 $response = Router::response($routes);
-$renderer = new Renderer('../app/Views');
-echo $renderer->render($response);
+
+if ($response instanceof \App\Core\TwigView) {
+    $renderer = new Renderer('../app/Views');
+    echo $renderer->render($response);
+}
+
+if ($response instanceof \App\Core\Redirect)
+{
+    header('Location: ' . $response->location());
+}

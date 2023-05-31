@@ -6,7 +6,7 @@ use App\Repositories\Article\ArticleRepository;
 use App\Repositories\Article\PdoArticleRepository;
 use App\Repositories\Comment\CommentRepository;
 use App\Repositories\Comment\JsonPlaceholderCommentRepository;
-use App\Repositories\User\JsonPlaceholderUsersRepository;
+use App\Repositories\User\PdoUserRepository;
 use App\Repositories\User\UserRepository;
 use DI\ContainerBuilder;
 
@@ -17,7 +17,7 @@ class Container
         $builder = new ContainerBuilder();
         $builder->addDefinitions([
             ArticleRepository::class => new PdoArticleRepository(),
-            UserRepository::class => new JsonPlaceholderUsersRepository(),
+            UserRepository::class => new PdoUserRepository(),
             CommentRepository::class => new JsonPlaceholderCommentRepository()
         ]);
         return $builder->build();

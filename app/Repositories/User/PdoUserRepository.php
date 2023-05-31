@@ -2,11 +2,12 @@
 
 namespace App\Repositories\User;
 
+use App\Models\User;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Query\QueryBuilder;
 
-class PdoUserRepository
+class PdoUserRepository implements UserRepository
 {
     private Connection $connection;
     private QueryBuilder $queryBuilder;
@@ -25,19 +26,71 @@ class PdoUserRepository
         $this->queryBuilder = $this->connection->createQueryBuilder();
     }
 
-    public function create(array $user): void
+    public function all(): array
     {
-        $this->queryBuilder
-            ->insert('registeredUsers')
-            ->values(
-                [
-                    'e_mail' => '?',
-                    'password' => '?'
-                ]
-            )
-            ->setParameter(0, $user['email'])
-            ->setParameter(1, $user['password'])
-            ->executeQuery();
+        return $this->queryBuilder
+            ->select("*")
+            ->from('registeredUsers')
+            ->fetchAllAssociative();
+    }
+
+    public function selectById(string $id): ?User
+    {
+        $user = $this->queryBuilder
+            ->select('*')
+            ->from('registeredUsers')
+            ->where('id = ?')
+            ->setParameter(0, $id)
+            ->fetchAssociative();
+
+        if (!$user) {
+            return null;
+        }
+
+        return new User(
+            $user['name'],
+            $user['e_mail'],
+            $user['password'],
+            $user['id'],
+        );
+    }
+
+    public function selectByEmail(string $email): ?User
+    {
+        $user = $this->queryBuilder
+            ->select('*')
+            ->from('registeredUsers')
+            ->where('e_mail = ?')
+            ->setParameter(0, $email)
+            ->fetchAssociative();
+
+        return new User(
+            $user['name'],
+            $user['e_mail'],
+            $user['password'],
+            $user['id']
+        );
+    }
+
+    public function create(User $user): void
+    {
+
+
+            $this->queryBuilder
+                ->insert('registeredUsers')
+                ->values(
+                    [
+                        'e_mail' => '?',
+                        'password' => '?',
+                        'name' => '?'
+                    ]
+                )
+                ->setParameter(0, $user->email())
+                ->setParameter(1, $user->password())
+                ->setParameter(2, $user->name())
+                ->executeQuery();
+
+            $user->setId((int) $this->connection->lastInsertId());
     }
 
     public function read(array $user): \stdClass
@@ -50,5 +103,10 @@ class PdoUserRepository
             ->fetchAssociative();
 
         return (object) $userFound;
+    }
+
+    public function fetchUserArticles(string $id): array
+    {
+        return [];
     }
 }

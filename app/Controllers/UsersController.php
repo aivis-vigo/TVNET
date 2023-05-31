@@ -2,13 +2,13 @@
 
 namespace App\Controllers;
 
+use App\Core\Redirect;
 use App\Core\TwigView;
 use App\Exceptions\ResourceNotFoundException;
 use App\Services\User\Create\CreateUserRequest;
 use App\Services\User\Create\CreateUserService;
 use App\Services\User\Index\IndexUserService;
 use App\Services\User\Read\ReadUserRequest;
-use App\Services\User\Read\ReadUserResponse;
 use App\Services\User\Read\ReadUserService;
 use App\Services\User\Show\ShowUserRequest;
 use App\Services\User\Show\ShowUserService;
@@ -23,10 +23,10 @@ class UsersController
     private ReadUserService $readUserService;
 
     public function __construct(
-        IndexUserService $indexUserService,
-        ShowUserService $showUserService,
+        IndexUserService  $indexUserService,
+        ShowUserService   $showUserService,
         CreateUserService $createUserService,
-        ReadUserService $readUserService
+        ReadUserService   $readUserService
     )
     {
         $this->indexUserService = $indexUserService;
@@ -37,8 +37,6 @@ class UsersController
 
     public function index(): TwigView
     {
-        unset($_SESSION['count']);
-
         $users = $this->indexUserService->execute();
 
         return new TwigView('indexUsers', ['users' => $users]);
@@ -84,12 +82,12 @@ class UsersController
         ]);
     }
 
-    public function validateLogin()
+    public function validateLogin(): TwigView
     {
         $user = $this->readUserService->execute(new ReadUserRequest($_POST));
 
-        $input = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $validate = password_verify($user->password(), $input);
+        $validate = password_verify($_POST['password'], $user->password());
+        var_dump($validate, $_POST['password']);
 
         if ($validate) {
             header('Location: /articles');
@@ -122,7 +120,7 @@ class UsersController
                 'button' => 'Sign Up',
                 'option' => 'Login',
                 'route' => '/login',
-                'error_message' => 'Email already in use or password exceeds 30 characters!'
+                'error_message' => 'Email already in use, passwords does not match or password exceeds 30 characters!'
             ]);
         }
     }

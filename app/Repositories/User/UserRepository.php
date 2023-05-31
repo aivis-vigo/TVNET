@@ -8,5 +8,8 @@ interface UserRepository
 {
     public function all(): array;
     public function selectById(string $id): ?User;
+    public function selectByEmail(string $email): ?User;
     public function fetchUserArticles(string $id): array;
+    public function create(User $user): void;
+    public function read(array $user): \stdClass;
 }

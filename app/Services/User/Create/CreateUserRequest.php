@@ -4,15 +4,36 @@ namespace App\Services\User\Create;
 
 class CreateUserRequest
 {
-    private array $user;
+    private string $name;
+    private string $email;
+    private string $password;
+    private string $confirmationPassword;
 
     public function __construct(array $user)
     {
-        $this->user = $user;
+        $this->name = $user['name'];
+        $this->email = $user['email'];
+        $this->password = $user['password'];
+        $this->confirmationPassword = $user['passwordConfirmation'];
     }
 
-    public function user(): array
+    public function name(): string
     {
-        return $this->user;
+        return $this->name;
+    }
+
+    public function email(): string
+    {
+        return $this->email;
+    }
+
+    public function password(): string
+    {
+        return $this->password;
+    }
+
+    public function confirmationPassword(): string
+    {
+        return $this->confirmationPassword;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\User\Create;
 
+use App\Models\User;
 use App\Repositories\User\PdoUserRepository;
 
 class CreateUserService
@@ -15,6 +16,17 @@ class CreateUserService
 
     public function execute(CreateUserRequest $request): void
     {
-        $this->pdoUserRepository->create($request->user());
+        $newUser = new User(
+            $request->name(),
+            $request->email(),
+            password_hash($request->password(), PASSWORD_DEFAULT),
+        );
+
+        if (!password_verify($request->confirmationPassword(), $newUser->password()))
+        {
+            var_dump("Passwords doesn't match!");
+        }
+
+        $this->pdoUserRepository->create($newUser);
     }
 }
