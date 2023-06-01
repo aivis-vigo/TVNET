@@ -2,8 +2,10 @@
 
 require_once "../vendor/autoload.php";
 
+use App\Core\Redirect;
 use App\Core\Renderer;
 use App\Core\Router;
+use App\Core\TwigView;
 
 session_start();
 
@@ -15,12 +17,12 @@ $response = Router::response($routes);
 
 var_dump($_SESSION);
 
-if ($response instanceof \App\Core\TwigView) {
+if ($response instanceof TwigView) {
     $renderer = new Renderer('../app/Views');
     echo $renderer->render($response);
 }
 
-if ($response instanceof \App\Core\Redirect)
+if ($response instanceof Redirect)
 {
     header('Location: ' . $response->location());
 }
