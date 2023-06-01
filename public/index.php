@@ -15,8 +15,6 @@ $dotenv->load();
 $routes = require_once '../routes.php';
 $response = Router::response($routes);
 
-var_dump($_SESSION);
-
 if ($response instanceof TwigView) {
     $renderer = new Renderer('../app/Views');
     echo $renderer->render($response);
