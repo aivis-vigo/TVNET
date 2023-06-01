@@ -1,6 +1,9 @@
 <?php declare(strict_types=1);
 
 use App\Controllers\ArticleController;
+use App\Controllers\LoginController;
+use App\Controllers\LogoutController;
+use App\Controllers\RegisterController;
 use App\Controllers\UsersController;
 
 return [
@@ -25,10 +28,13 @@ return [
     ['GET', '/delete/{id:\d+}', [ArticleController::class, 'delete']],
 
     // Login
-    ['GET', '/login', [UsersController::class, 'authorize']],
-    ['POST', '/login', [UsersController::class, 'validateLogin']],
+    ['GET', '/login', [LoginController::class, 'authorize']],
+    ['POST', '/login', [LoginController::class, 'validateLogin']],
 
     // Register
-    ['GET', '/register', [UsersController::class, 'register']],
-    ['POST', '/register', [UsersController::class, 'validateRegistration']],
+    ['GET', '/register', [RegisterController::class, 'register']],
+    ['POST', '/register', [RegisterController::class, 'validateRegistration']],
+
+    // Logout
+    ['GET', '/logout', [LogoutController::class, 'logout']],
 ];

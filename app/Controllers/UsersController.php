@@ -2,37 +2,24 @@
 
 namespace App\Controllers;
 
-use App\Core\Redirect;
 use App\Core\TwigView;
 use App\Exceptions\ResourceNotFoundException;
-use App\Services\User\Create\CreateUserRequest;
-use App\Services\User\Create\CreateUserService;
 use App\Services\User\Index\IndexUserService;
-use App\Services\User\Read\ReadUserRequest;
-use App\Services\User\Read\ReadUserService;
 use App\Services\User\Show\ShowUserRequest;
 use App\Services\User\Show\ShowUserService;
-use Doctrine\DBAL\Exception\DriverException;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class UsersController
 {
     private IndexUserService $indexUserService;
     private ShowUserService $showUserService;
-    private CreateUserService $createUserService;
-    private ReadUserService $readUserService;
 
     public function __construct(
         IndexUserService  $indexUserService,
-        ShowUserService   $showUserService,
-        CreateUserService $createUserService,
-        ReadUserService   $readUserService
+        ShowUserService   $showUserService
     )
     {
         $this->indexUserService = $indexUserService;
         $this->showUserService = $showUserService;
-        $this->createUserService = $createUserService;
-        $this->readUserService = $readUserService;
     }
 
     public function index(): TwigView
@@ -53,74 +40,6 @@ class UsersController
             ]);
         } catch (ResourceNotFoundException $exception) {
             return new TwigView('notFound', []);
-        }
-    }
-
-    public function authorize(): TwigView
-    {
-        return new TwigView('authorize/login', [
-            'action' => '/login',
-            'method' => 'POST',
-            'message' => 'Sign in to your account',
-            'optionLabel' => 'Don’t have an account yet?',
-            'button' => 'Sign In',
-            'option' => 'Create account',
-            'route' => '/register'
-        ]);
-    }
-
-    public function register(): TwigView
-    {
-        return new TwigView('authorize/register', [
-            'action' => '/register',
-            'method' => 'POST',
-            'message' => 'Create your account',
-            'optionLabel' => 'Already have an account?',
-            'button' => 'Sign Up',
-            'option' => 'Login',
-            'route' => '/login'
-        ]);
-    }
-
-    public function validateLogin(): TwigView
-    {
-        $user = $this->readUserService->execute(new ReadUserRequest($_POST));
-
-        $validate = password_verify($_POST['password'], $user->password());
-
-        if ($validate) {
-            header('Location: /articles');
-        }
-
-        return new TwigView('authorize/login', [
-            'action' => '/login',
-            'method' => 'POST',
-            'message' => 'Sign in to your account',
-            'optionLabel' => 'Don’t have an account yet?',
-            'button' => 'Sign In',
-            'option' => 'Create',
-            'route' => '/register',
-            'error_message' => 'Wrong email or password provided!'
-        ]);
-    }
-
-    public function validateRegistration()
-    {
-        try {
-            $this->createUserService->execute(new CreateUserRequest($_POST));
-
-            header('Location: /articles');
-        } catch (UniqueConstraintViolationException|DriverException $exception) {
-            return new TwigView('authorize/register', [
-                'action' => '/register',
-                'method' => 'POST',
-                'message' => 'Create your account',
-                'optionLabel' => 'Already have an account?',
-                'button' => 'Sign Up',
-                'option' => 'Login',
-                'route' => '/login',
-                'error_message' => 'Email already in use, passwords does not match or password exceeds 30 characters!'
-            ]);
         }
     }
 }

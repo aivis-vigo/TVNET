@@ -46,14 +46,6 @@ class ArticleController
 
     public function index(): TwigView
     {
-        $_SESSION['count'] = ($_SESSION['count'] ?? 0) + 1;
-
-        setcookie(
-            'userName',
-            'Aivis',
-            (int) round(time() + (0.5 * 60 * 60))
-        );
-
         $articles = $this->indexArticleService->execute();
 
         if (empty($articles)) {
