@@ -11,5 +11,5 @@ interface UserRepository
     public function selectByEmail(string $email): ?User;
     public function fetchUserArticles(string $id): array;
     public function create(User $user): void;
-    public function read(array $user): \stdClass;
+    public function read(string $user): \stdClass;
 }

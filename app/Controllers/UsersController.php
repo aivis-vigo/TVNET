@@ -87,7 +87,6 @@ class UsersController
         $user = $this->readUserService->execute(new ReadUserRequest($_POST));
 
         $validate = password_verify($_POST['password'], $user->password());
-        var_dump($validate, $_POST['password']);
 
         if ($validate) {
             header('Location: /articles');

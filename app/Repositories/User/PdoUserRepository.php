@@ -74,32 +74,30 @@ class PdoUserRepository implements UserRepository
 
     public function create(User $user): void
     {
+        $this->queryBuilder
+            ->insert('registeredUsers')
+            ->values(
+                [
+                    'e_mail' => '?',
+                    'password' => '?',
+                    'name' => '?'
+                ]
+            )
+            ->setParameter(0, $user->email())
+            ->setParameter(1, $user->password())
+            ->setParameter(2, $user->name())
+            ->executeQuery();
 
-
-            $this->queryBuilder
-                ->insert('registeredUsers')
-                ->values(
-                    [
-                        'e_mail' => '?',
-                        'password' => '?',
-                        'name' => '?'
-                    ]
-                )
-                ->setParameter(0, $user->email())
-                ->setParameter(1, $user->password())
-                ->setParameter(2, $user->name())
-                ->executeQuery();
-
-            $user->setId((int) $this->connection->lastInsertId());
+        $user->setId((int) $this->connection->lastInsertId());
     }
 
-    public function read(array $user): \stdClass
+    public function read(string $user): \stdClass
     {
         $userFound = $this->queryBuilder
             ->select('*')
             ->from('registeredUsers')
             ->where('e_mail = ?')
-            ->setParameter(0, $user['email'])
+            ->setParameter(0, $user)
             ->fetchAssociative();
 
         return (object) $userFound;
